@@ -8,6 +8,7 @@ import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Tooltip } from '@/components/ui/tooltip'
 import { MarcaNobru, SeloNobru } from './marca'
+import { ICONES } from './icones'
 import type { GrupoNav } from './navegacao'
 
 /**
@@ -67,7 +68,7 @@ export function Sidebar({ grupos, nomeLoja }: { grupos: GrupoNav[]; nomeLoja: st
             <ul className="space-y-0.5">
               {grupo.itens.map((item) => {
                 const ativo = item.prefixo ? pathname.startsWith(item.href) : pathname === item.href
-                const Icone = item.icone
+                const Icone = ICONES[item.icone]
                 const conteudo = (
                   <Link
                     href={item.href}

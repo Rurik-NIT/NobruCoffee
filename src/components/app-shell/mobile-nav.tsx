@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
+import { ICONES } from './icones'
 import type { ItemNav } from './navegacao'
 
 /**
@@ -24,7 +25,7 @@ export function MobileNav({ itens }: { itens: ItemNav[] }) {
     >
       {itens.map((item) => {
         const ativo = item.prefixo ? pathname.startsWith(item.href) : pathname === item.href
-        const Icone = item.icone
+        const Icone = ICONES[item.icone]
         return (
           <Link
             key={item.href}

@@ -25,6 +25,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/combobo
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { useOnline } from '@/hooks/use-online'
 import { MarcaNobru } from './marca'
+import { ICONES } from './icones'
 import { tituloDaRota, type GrupoNav } from './navegacao'
 
 export type NotificacaoUI = {
@@ -247,7 +248,7 @@ export function Topbar({
                 <ul className="space-y-0.5">
                   {grupo.itens.map((item) => {
                     const ativo = item.prefixo ? pathname.startsWith(item.href) : pathname === item.href
-                    const Icone = item.icone
+                    const Icone = ICONES[item.icone]
                     return (
                       <li key={item.href}>
                         <Link
@@ -299,7 +300,7 @@ export function Topbar({
                 Nenhuma tela com esse nome.
               </Command.Empty>
               {itens.map((item) => {
-                const Icone = item.icone
+                const Icone = ICONES[item.icone]
                 return (
                   <Command.Item
                     key={item.href}
