@@ -159,6 +159,10 @@ model Usuario {
   cargoId       String    @map("cargo_id") @db.Uuid
   nome          String
   email         String    @unique
+  /// Apelido curto de acesso. Serve para entrar sem digitar o e-mail inteiro —
+  /// o que importa no iPad do balcão, onde cada toque custa tempo. Opcional:
+  /// quem não tem apelido entra pelo e-mail.
+  apelido       String?   @unique @db.VarChar(32)
   senhaHash     String    @map("senha_hash")
   telefone      String?
   cpf           String?

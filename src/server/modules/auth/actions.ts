@@ -37,10 +37,10 @@ function limparTentativas(chave: string) {
   tentativas.delete(chave)
 }
 
-export const entrar = acao(entrarSchema, async ({ email, senha }) => {
+export const entrar = acao(entrarSchema, async ({ identificador, senha }) => {
   const h = await headers()
   const ip = (h.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'local'
-  const chave = `${ip}:${email}`
+  const chave = `${ip}:${identificador}`
 
   if (!registrarTentativa(chave)) {
     throw new ErroDeNegocio(
@@ -49,14 +49,16 @@ export const entrar = acao(entrarSchema, async ({ email, senha }) => {
     )
   }
 
+  // `email` e `apelido` são ambos únicos; a presença do @ decide por qual
+  // coluna procurar, sem varredura.
   const usuario = await db.usuario.findUnique({
-    where: { email },
+    where: identificador.includes('@') ? { email: identificador } : { apelido: identificador },
     select: { id: true, nome: true, senhaHash: true, ativo: true, lojaId: true },
   })
 
-  // Mensagem idêntica para e-mail inexistente e senha errada: não revelamos
-  // quais e-mails existem no sistema.
-  const generico = 'E-mail ou senha incorretos.'
+  // Mensagem idêntica para identificador inexistente e senha errada: não
+  // revelamos quais acessos existem no sistema.
+  const generico = 'Acesso ou senha incorretos.'
   if (!usuario) throw new ErroDeNegocio(generico, 'VALIDACAO', { senha: generico })
 
   const senhaOk = await verificarSenha(senha, usuario.senhaHash)

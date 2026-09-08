@@ -544,13 +544,13 @@ td.num { font-variant-numeric: tabular-nums; }
         <span>TOUR NA BASE DE DEMONSTRAÇÃO</span>
       </div>
       <ol>
-        <li>Entre como <b>camila@nobrucoffee.com.br</b></li>
+        <li>Entre como <b>camila</b> / <b>nobru2026</b></li>
         <li><span class="tela">Vendas › Caixas</span> abrir caixa com R$ 150,00</li>
         <li><span class="tela">Vendas › PDV</span> toque em Donut Nutella, Cappuccino (300 ml + calda) e Coxinha</li>
         <li>Cobrar → Dinheiro → recebido R$ 100,00 → veja o troco → Confirmar</li>
         <li><span class="tela">Estoque › Movimentações</span> a farinha, o leite e o copo acabaram de sair</li>
         <li><span class="tela">Gestão › Auditoria</span> a venda está lá, com o seu nome</li>
-        <li>Entre como <b>jessica@</b> → <span class="tela">Gestão › Relatórios</span> → aba Produtos → veja a margem</li>
+        <li>Entre como <b>admin</b> / <b>admin</b> → <span class="tela">Gestão › Relatórios</span> → aba Produtos → veja a margem</li>
       </ol>
       <div class="ticket-pe">
         Em sete passos você percorreu o caminho inteiro:<br>
@@ -604,23 +604,27 @@ td.num { font-variant-numeric: tabular-nums; }
         </div>
 
         <h3>Entrar</h3>
-        <p>Acesse <span class="tela">/entrar</span> com o e-mail e a senha que o gerente cadastrou.</p>
+        <p>Acesse <span class="tela">/entrar</span> com o <strong>e-mail ou o apelido de acesso</strong> e a senha que o gerente cadastrou. O apelido é um atalho — <span class="chave">camila</span> em vez de <span class="chave">camila@nobrucoffee.com.br</span> — e quem não tem apelido entra pelo e-mail. Quem define isso é <span class="tela">Gestão › Equipe</span>, no campo <strong>Apelido de acesso</strong>.</p>
         <p><strong>Cada pessoa tem o seu acesso.</strong> Não existe login compartilhado, e isso não é burocracia: o sistema grava quem cancelou cada venda, quem deu cada desconto e quem ajustou cada saldo de estoque. Com login compartilhado, a resposta para “quem fez isso?” seria sempre “o caixa” — e aí a trilha não serve para nada.</p>
 
-        <p class="rotulo-campo">Base de demonstração — senha de todos: nobru2026</p>
+        <p class="rotulo-campo">Acessos da base de demonstração</p>
         <div class="tabela">
           <table>
             <thead>
-              <tr><th scope="col">E-mail</th><th scope="col">Cargo</th><th scope="col">O que enxerga</th></tr>
+              <tr><th scope="col">Apelido</th><th scope="col">Senha</th><th scope="col">Cargo</th><th scope="col">O que enxerga</th></tr>
             </thead>
             <tbody>
-              <tr><th scope="row" class="mono">jessica@nobrucoffee.com.br</th><td>Administrador</td><td>Tudo</td></tr>
-              <tr><th scope="row" class="mono">bruno@nobrucoffee.com.br</th><td>Gerente</td><td>Tudo menos permissões e configurações</td></tr>
-              <tr><th scope="row" class="mono">camila@nobrucoffee.com.br</th><td>Atendente</td><td>PDV, mesas, pedidos, clientes, encomendas</td></tr>
-              <tr><th scope="row" class="mono">diego@nobrucoffee.com.br</th><td>Atendente</td><td>Idem</td></tr>
-              <tr><th scope="row" class="mono">aline@nobrucoffee.com.br</th><td>Produção</td><td>Produção, fichas, estoque, recebimentos</td></tr>
+              <tr><th scope="row" class="mono">admin</th><td class="mono">admin</td><td>Administrador</td><td>Tudo</td></tr>
+              <tr><th scope="row" class="mono">gerente</th><td class="mono">nobru2026</td><td>Gerente</td><td>Tudo menos permissões e configurações</td></tr>
+              <tr><th scope="row" class="mono">camila</th><td class="mono">nobru2026</td><td>Atendente</td><td>PDV, mesas, pedidos, clientes, encomendas</td></tr>
+              <tr><th scope="row" class="mono">diego</th><td class="mono">nobru2026</td><td>Atendente</td><td>Idem</td></tr>
+              <tr><th scope="row" class="mono">aline</th><td class="mono">nobru2026</td><td>Produção</td><td>Produção, fichas, estoque, recebimentos</td></tr>
             </tbody>
           </table>
+        </div>
+        <div class="regra">
+          <span class="nota-titulo">Antes de abrir a loja</span>
+          <p><span class="chave">admin/admin</span> é credencial de teste. Troque no primeiro acesso real: esse cargo abre tudo, inclusive permissões.</p>
         </div>
 
         <p>Entre com cargos diferentes para ver o menu mudar. <strong>O menu esconde o que o cargo não abre, mas quem barra de verdade é o servidor</strong> — digitar o endereço na mão não contorna nada.</p>

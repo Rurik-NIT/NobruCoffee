@@ -76,14 +76,19 @@ Com Docker disponível, `pnpm db:up` sobe um Postgres 16 local antes do
 
 ### Acessos da base de demonstração
 
-Senha para todos: **`nobru2026`**
+O login aceita **e-mail ou apelido de acesso** — o apelido existe para não
+digitar o endereço inteiro no iPad do balcão.
 
-| E-mail | Cargo |
-|---|---|
-| `jessica@nobrucoffee.com.br` | Administrador |
-| `bruno@nobrucoffee.com.br` | Gerente |
-| `camila@nobrucoffee.com.br` | Atendente |
-| `aline@nobrucoffee.com.br` | Produção |
+| Apelido | Senha | Cargo | E-mail |
+|---|---|---|---|
+| `admin` | `admin` | Administrador | `jessica@nobrucoffee.com.br` |
+| `gerente` | `nobru2026` | Gerente | `bruno@nobrucoffee.com.br` |
+| `camila` | `nobru2026` | Atendente | `camila@nobrucoffee.com.br` |
+| `diego` | `nobru2026` | Atendente | `diego@nobrucoffee.com.br` |
+| `aline` | `nobru2026` | Produção | `aline@nobrucoffee.com.br` |
+
+`admin/admin` é credencial de teste local. Troque antes de qualquer uso real —
+o cargo Administrador tem acesso total, inclusive a permissões.
 
 O seed gera 45 dias com ~2.000 vendas, produção diária, compras recebidas,
 encomendas, perdas e contas — o painel já abre com números que fazem sentido.

@@ -34,22 +34,28 @@ toda regra chata aqui existe para evitar um problema pior depois.
 
 ### Entrar
 
-Acesse `/entrar` com o e-mail e a senha que o gerente cadastrou.
+Acesse `/entrar` com o **e-mail ou o apelido de acesso** e a senha que o gerente
+cadastrou. O apelido é um atalho — `camila` em vez de
+`camila@nobrucoffee.com.br` — e quem não tem apelido entra pelo e-mail. Quem
+define isso é `Gestão › Equipe`, no campo **Apelido de acesso**.
 
 **Cada pessoa tem o seu acesso.** Não existe login compartilhado, e isso não é
 burocracia: o sistema grava quem cancelou cada venda, quem deu cada desconto e
 quem ajustou cada saldo de estoque. Com login compartilhado, a resposta para
 "quem fez isso?" seria sempre "o caixa" — e aí a trilha não serve para nada.
 
-Na base de demonstração, a senha de todos é `nobru2026`:
+Na base de demonstração:
 
-| E-mail | Cargo | O que enxerga |
-|---|---|---|
-| `jessica@nobrucoffee.com.br` | Administrador | Tudo |
-| `bruno@nobrucoffee.com.br` | Gerente | Tudo menos permissões e configurações |
-| `camila@nobrucoffee.com.br` | Atendente | PDV, mesas, pedidos, clientes, encomendas |
-| `diego@nobrucoffee.com.br` | Atendente | idem |
-| `aline@nobrucoffee.com.br` | Produção | Produção, fichas, estoque, recebimentos |
+| Apelido | Senha | Cargo | O que enxerga |
+|---|---|---|---|
+| `admin` | `admin` | Administrador | Tudo |
+| `gerente` | `nobru2026` | Gerente | Tudo menos permissões e configurações |
+| `camila` | `nobru2026` | Atendente | PDV, mesas, pedidos, clientes, encomendas |
+| `diego` | `nobru2026` | Atendente | idem |
+| `aline` | `nobru2026` | Produção | Produção, fichas, estoque, recebimentos |
+
+> `admin/admin` é credencial de teste. Numa loja de verdade, troque no primeiro
+> acesso: esse cargo abre tudo, inclusive permissões.
 
 Entre com cargos diferentes para ver o menu mudar. **O menu esconde o que o
 cargo não abre, mas quem barra de verdade é o servidor** — digitar o endereço na
@@ -591,7 +597,7 @@ turno.
 
 Se quiser experimentar rápido na base de demonstração:
 
-1. Entre como `camila@nobrucoffee.com.br` / `nobru2026`.
+1. Entre como `camila` / `nobru2026`.
 2. `Vendas › Caixas` → **Abrir caixa** com R$ 150.
 3. `Vendas › PDV` → toque em **Donut Nutella**, **Cappuccino** (escolha 300 ml e
    uma calda) e **Coxinha**.

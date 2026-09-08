@@ -1,0 +1,18 @@
+{
+  // Caminho do psql, usado pela tarefa "1 · Criar banco".
+  // Se a sua instalação do PostgreSQL não for a 18, troque o número aqui.
+  "nobru.psql": "C:\\Program Files\\PostgreSQL\\18\\bin\\psql.exe",
+
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
+  "[prisma]": { "editor.defaultFormatter": "Prisma.prisma" },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // O Tailwind 4 declara os tokens no CSS; sem isto o editor marca @theme como erro.
+  "files.associations": { "*.css": "tailwindcss" },
+  "tailwindCSS.experimental.classRegex": [["cn\\(([^)]*)\\)", "'([^']*)'"]],
+
+  "search.exclude": { "**/.next": true, "**/node_modules": true, "**/public/icons": true },
+  "files.eol": "\n"
+}

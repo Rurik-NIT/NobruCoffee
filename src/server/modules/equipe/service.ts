@@ -31,6 +31,7 @@ export async function listarUsuarios(empresaId: string, lojaId: string) {
     id: u.id,
     nome: u.nome,
     email: u.email,
+    apelido: u.apelido,
     telefone: u.telefone,
     avatarUrl: u.avatarUrl,
     cargo: u.cargo,

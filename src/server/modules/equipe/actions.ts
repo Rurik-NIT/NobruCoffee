@@ -30,9 +30,22 @@ export const salvarUsuario = acao(usuarioSchema, async (entrada) => {
   })
   if (duplicado) throw new ErroDeNegocio('Este e-mail já está em uso.', 'CONFLITO', { email: 'E-mail já cadastrado.' })
 
+  // O apelido é a outra porta de entrada do login: precisa ser único também.
+  const apelido = entrada.apelido ? entrada.apelido : null
+  if (apelido) {
+    const apelidoEmUso = await db.usuario.findFirst({
+      where: { apelido, ...(entrada.id ? { id: { not: entrada.id } } : {}) },
+      select: { id: true },
+    })
+    if (apelidoEmUso) {
+      throw new ErroDeNegocio('Este apelido já está em uso.', 'CONFLITO', { apelido: 'Apelido já cadastrado.' })
+    }
+  }
+
   const dados = {
     nome: entrada.nome,
     email: entrada.email,
+    apelido,
     cargoId: entrada.cargoId,
     telefone: entrada.telefone || null,
     cpf: entrada.cpf || null,

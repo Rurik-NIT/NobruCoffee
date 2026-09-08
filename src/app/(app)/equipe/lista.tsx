@@ -24,6 +24,7 @@ type Usuario = {
   id: string
   nome: string
   email: string
+  apelido: string | null
   telefone: string | null
   avatarUrl: string | null
   cargo: { id: string; nome: string; slug: string }
@@ -227,6 +228,7 @@ function FormularioUsuario({
 }) {
   const [nome, setNome] = React.useState(usuario?.nome ?? '')
   const [email, setEmail] = React.useState(usuario?.email ?? '')
+  const [apelido, setApelido] = React.useState(usuario?.apelido ?? '')
   const [cargoId, setCargoId] = React.useState(usuario?.cargo.id ?? cargos.find((c) => !c.acessoTotal)?.id ?? cargos[0]?.id ?? '')
   const [telefone, setTelefone] = React.useState(usuario?.telefone ?? '')
   const [admitidoEm, setAdmitidoEm] = React.useState(usuario?.admitidoEm ? usuario.admitidoEm.slice(0, 10) : '')
@@ -254,6 +256,21 @@ function FormularioUsuario({
               <Input id="u-tel" value={telefone} onChange={(e) => setTelefone(e.target.value)} inputMode="tel" />
             </Field>
           </FieldRow>
+          <Field
+            label="Apelido de acesso"
+            htmlFor="u-apelido"
+            erro={acao.erroCampos.apelido}
+            dica="Atalho para entrar sem digitar o e-mail. Em branco, a pessoa entra pelo e-mail."
+          >
+            <Input
+              id="u-apelido"
+              value={apelido}
+              onChange={(e) => setApelido(e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, ''))}
+              autoCapitalize="none"
+              spellCheck={false}
+              placeholder="camila"
+            />
+          </Field>
           <Field label="Cargo" htmlFor="u-cargo" erro={acao.erroCampos.cargoId} obrigatorio>
             <SelectSimples
               id="u-cargo"
@@ -308,6 +325,7 @@ function FormularioUsuario({
                 id: usuario?.id,
                 nome,
                 email,
+                apelido,
                 cargoId,
                 telefone,
                 admitidoEm,

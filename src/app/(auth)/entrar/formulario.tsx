@@ -12,7 +12,7 @@ import { entrar } from '@/server/modules/auth/actions'
 
 export function FormularioLogin({ proximo }: { proximo?: string }) {
   const router = useRouter()
-  const [email, setEmail] = React.useState('')
+  const [identificador, setIdentificador] = React.useState('')
   const [senha, setSenha] = React.useState('')
   const [mostrarSenha, setMostrarSenha] = React.useState(false)
 
@@ -23,21 +23,22 @@ export function FormularioLogin({ proximo }: { proximo?: string }) {
 
   async function aoEnviar(e: React.FormEvent) {
     e.preventDefault()
-    await executar({ email, senha })
+    await executar({ identificador, senha })
   }
 
   return (
     <form onSubmit={aoEnviar} className="mt-8 space-y-4" noValidate>
-      <Field label="E-mail" htmlFor="email" erro={erroCampos.email} obrigatorio>
+      <Field label="E-mail ou apelido" htmlFor="identificador" erro={erroCampos.identificador} obrigatorio>
         <Input
-          id="email"
-          type="email"
+          id="identificador"
+          type="text"
           autoComplete="username"
-          inputMode="email"
+          autoCapitalize="none"
+          spellCheck={false}
           autoFocus
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="voce@nobrucoffee.com.br"
+          value={identificador}
+          onChange={(e) => setIdentificador(e.target.value)}
+          placeholder="admin ou voce@nobrucoffee.com.br"
         />
       </Field>
 
@@ -62,7 +63,7 @@ export function FormularioLogin({ proximo }: { proximo?: string }) {
         </div>
       </Field>
 
-      {erroGeral && !erroCampos.senha && !erroCampos.email ? (
+      {erroGeral && !erroCampos.senha && !erroCampos.identificador ? (
         <p role="alert" className="rounded-control border border-danger/30 bg-danger-soft px-3 py-2 text-sm font-medium text-danger">
           {erroGeral}
         </p>

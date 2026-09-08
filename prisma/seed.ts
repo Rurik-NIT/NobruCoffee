@@ -173,14 +173,17 @@ async function main() {
     cargos[c.slug] = criado.id
   }
 
+  // Senhas da base de demonstração. O administrador usa `admin/admin` para o
+  // teste local ser imediato; trocar antes de qualquer uso real.
   const senhaPadrao = await hashSenha('nobru2026')
+  const senhaAdmin = await hashSenha('admin')
   const equipe = await Promise.all(
     [
-      { nome: 'Jessica Carneiro', email: 'jessica@nobrucoffee.com.br', cargo: 'administrador', admissao: 1200 },
-      { nome: 'Bruno Nobre', email: 'bruno@nobrucoffee.com.br', cargo: 'gerente', admissao: 900 },
-      { nome: 'Camila Ferraz', email: 'camila@nobrucoffee.com.br', cargo: 'atendente', admissao: 400 },
-      { nome: 'Diego Matos', email: 'diego@nobrucoffee.com.br', cargo: 'atendente', admissao: 180 },
-      { nome: 'Aline Prado', email: 'aline@nobrucoffee.com.br', cargo: 'producao', admissao: 620 },
+      { nome: 'Jessica Carneiro', email: 'jessica@nobrucoffee.com.br', apelido: 'admin', senha: senhaAdmin, cargo: 'administrador', admissao: 1200 },
+      { nome: 'Bruno Nobre', email: 'bruno@nobrucoffee.com.br', apelido: 'gerente', cargo: 'gerente', admissao: 900 },
+      { nome: 'Camila Ferraz', email: 'camila@nobrucoffee.com.br', apelido: 'camila', cargo: 'atendente', admissao: 400 },
+      { nome: 'Diego Matos', email: 'diego@nobrucoffee.com.br', apelido: 'diego', cargo: 'atendente', admissao: 180 },
+      { nome: 'Aline Prado', email: 'aline@nobrucoffee.com.br', apelido: 'aline', cargo: 'producao', admissao: 620 },
     ].map((u) =>
       db.usuario.create({
         data: {
@@ -189,7 +192,8 @@ async function main() {
           cargoId: cargos[u.cargo],
           nome: u.nome,
           email: u.email,
-          senhaHash: senhaPadrao,
+          apelido: u.apelido,
+          senhaHash: u.senha ?? senhaPadrao,
           telefone: `1299${inteiro(1000000, 9999999)}`,
           admitidoEm: diasAtras(u.admissao),
           ultimoLoginEm: diasAtras(inteiro(0, 2), inteiro(9, 18)),
@@ -1469,10 +1473,11 @@ async function main() {
   console.log(`   Histórico:    ${DIAS_HISTORICO} dias · ${contadorPedido} vendas`)
   console.log(`   Faturamento:  R$ ${Number(faturamento._sum.total ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`)
   console.log(`   Mais vendido: ${defsProdutos.find((d) => d.sku === maisVendido?.[0])?.nome ?? '—'} (${maisVendido?.[1]} un)`)
-  console.log('\n   Acessos (senha para todos: nobru2026):')
+  console.log('\n   Acessos (entre pelo apelido ou pelo e-mail):')
   for (const u of equipe) {
     const cargo = Object.entries(cargos).find(([, id]) => id === u.cargoId)?.[0]
-    console.log(`     ${u.email.padEnd(32)} ${cargo}`)
+    const senha = u.apelido === 'admin' ? 'admin' : 'nobru2026'
+    console.log(`     ${(u.apelido ?? '—').padEnd(10)} ${senha.padEnd(11)} ${(cargo ?? '').padEnd(15)} ${u.email}`)
   }
   console.log('')
 }

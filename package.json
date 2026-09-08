@@ -23,7 +23,8 @@
     "db:reset": "prisma migrate reset --force",
     "setup": "pnpm db:up && pnpm db:push && pnpm db:seed",
     "verificar:rotas": "node scripts/verificar-rotas.mjs",
-    "gerar:icones": "node scripts/gerar-icones.mjs"
+    "gerar:icones": "node scripts/gerar-icones.mjs",
+    "setup:local": "prisma db push && tsx prisma/seed.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

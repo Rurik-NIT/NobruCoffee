@@ -1,0 +1,89 @@
+{
+  // Terminal › Executar Tarefa…  (Ctrl+Shift+P → "Run Task")
+  //
+  // A ordem é 1 → 2 → 3 na primeira vez. Depois, só "Rodar".
+  // Tudo roda no terminal integrado, então o psql consegue pedir a senha.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1 · Criar banco (pede a senha do postgres)",
+      "detail": "Cria o papel e o banco 'nobru'. Roda uma vez só. A senha do postgres é digitada por você no terminal.",
+      "type": "shell",
+      "command": "& '${config:nobru.psql}' -U postgres -c \"CREATE ROLE nobru LOGIN PASSWORD 'nobru';\" -c \"CREATE DATABASE nobru OWNER nobru;\"",
+      "windows": {
+        "command": "& '${config:nobru.psql}' -U postgres -c \"CREATE ROLE nobru LOGIN PASSWORD 'nobru';\" -c \"CREATE DATABASE nobru OWNER nobru;\""
+      },
+      "options": { "shell": { "executable": "powershell.exe", "args": ["-NoProfile", "-Command"] } },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "2 · Aplicar o schema no banco",
+      "detail": "prisma db push — cria as 40 tabelas.",
+      "type": "shell",
+      "command": "pnpm db:push",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "3 · Popular a base de demonstração",
+      "detail": "45 dias de histórico, ~2.000 vendas e os acessos (admin/admin).",
+      "type": "shell",
+      "command": "pnpm db:seed",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Preparar o banco (2 + 3)",
+      "detail": "Aplica o schema e popula, em sequência. Use depois da tarefa 1.",
+      "dependsOrder": "sequence",
+      "dependsOn": ["2 · Aplicar o schema no banco", "3 · Popular a base de demonstração"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Rodar (pnpm dev)",
+      "detail": "Sobe o servidor em http://localhost:3000",
+      "type": "shell",
+      "command": "pnpm dev",
+      "isBackground": true,
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": {
+        "owner": "next",
+        "pattern": { "regexp": "^(.*)$", "message": 1 },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*(Starting|Compiling|compiling).*",
+          "endsPattern": ".*(Ready in|Local:\\s+http).*"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Prisma Studio (ver o banco)",
+      "detail": "Abre um navegador de tabelas em http://localhost:5555",
+      "type": "shell",
+      "command": "pnpm db:studio",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Recomeçar a base do zero",
+      "detail": "Apaga e recria tudo. Use quando o banco ficar num estado estranho.",
+      "type": "shell",
+      "command": "pnpm db:push --force-reset; if ($?) { pnpm db:seed }",
+      "options": { "shell": { "executable": "powershell.exe", "args": ["-NoProfile", "-Command"] } },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "Conferir tudo (tipos, lint, rotas)",
+      "detail": "O que o CI roda. Não precisa de banco.",
+      "type": "shell",
+      "command": "pnpm typecheck; pnpm lint; pnpm verificar:rotas",
+      "options": { "shell": { "executable": "powershell.exe", "args": ["-NoProfile", "-Command"] } },
+      "problemMatcher": ["$tsc"],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    }
+  ]
+}
