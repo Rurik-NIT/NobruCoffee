@@ -24,11 +24,20 @@
       "presentation": { "reveal": "always", "panel": "dedicated" }
     },
     {
-      "label": "Criar o usuário e o banco no PostgreSQL",
-      "detail": "Roda uma vez só, antes da primeira execução. O psql pede a senha do postgres aqui no terminal.",
-      "type": "shell",
-      "command": "& '${config:nobru.psql}' -U postgres -c \"CREATE ROLE nobru LOGIN PASSWORD 'nobru' CREATEDB;\" -c \"CREATE DATABASE nobru OWNER nobru;\"",
-      "options": { "shell": { "executable": "powershell.exe", "args": ["-NoProfile", "-Command"] } },
+      "label": "Criar o usuário do banco no PostgreSQL",
+      "detail": "Roda uma vez só. O psql pede a senha do postgres aqui no terminal. O banco em si o 'Rodar' cria depois.",
+      // type "process" e não "shell": o SQL vai como argumento literal para o
+      // psql. Passar por `powershell -Command` fazia a camada de shell comer as
+      // aspas e o psql recebia CREATE, ROLE, nobru… como argumentos soltos.
+      "type": "process",
+      "command": "${config:nobru.psql}",
+      "args": [
+        "-U",
+        "postgres",
+        "-c",
+        // Idempotente: rodar de novo não dá erro de papel já existente.
+        "DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'nobru') THEN CREATE ROLE nobru LOGIN PASSWORD 'nobru' CREATEDB; END IF; END $$;"
+      ],
       "problemMatcher": [],
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
     },
