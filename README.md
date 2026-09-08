@@ -51,19 +51,36 @@ o dado vem do Server Component e volta pela Server Action.
 
 ## Começar
 
-**Pré-requisitos:** Node 20.11+, pnpm 9+ e um PostgreSQL 14+.
+**Pré-requisitos:** Node 20.11+, um gerenciador de pacotes (bun, pnpm ou npm) e
+um PostgreSQL 14+ alcançável.
+
+```bash
+bun install
+cp .env.example .env          # aponte DATABASE_URL e gere o AUTH_SECRET
+bun run dev                   # http://localhost:3000
+```
+
+`dev` chama [`scripts/preparar-banco.mjs`](scripts/preparar-banco.mjs) antes de
+subir o servidor. O script cria o banco se ele não existir, aplica o schema se
+as tabelas faltarem e popula os 45 dias de histórico se estiver vazio — nesta
+ordem, e nada disso de novo nas execuções seguintes: com tudo de pé ele sai em
+menos de meio segundo. Quando encontra algo que não pode resolver sozinho, ele
+imprime o comando que resolve.
 
 O banco pode ser **qualquer** PostgreSQL — Neon, Supabase, Railway, RDS, um
 Postgres instalado na máquina, ou o `docker compose` incluído. O sistema não
 depende de Docker; o `docker-compose.yml` existe só como conveniência.
 
+**O passo que precisa de superusuário.** Criar um *papel* no PostgreSQL não é
+algo que o script possa fazer — exige credencial de administrador do banco. Num
+Postgres local, isto roda uma vez:
+
 ```bash
-pnpm install
-cp .env.example .env          # aponte DATABASE_URL e gere o AUTH_SECRET
-pnpm db:push                  # cria o schema
-pnpm db:seed                  # popula 45 dias de operação
-pnpm dev                      # http://localhost:3000
+psql -U postgres -c "CREATE ROLE nobru LOGIN PASSWORD 'nobru' CREATEDB;" -c "CREATE DATABASE nobru OWNER nobru;"
 ```
+
+Num banco gerenciado (Neon, Supabase) o usuário já vem criado: basta colar a
+`DATABASE_URL` no `.env`.
 
 Gerar o segredo de sessão:
 
@@ -71,8 +88,9 @@ Gerar o segredo de sessão:
 node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 ```
 
-Com Docker disponível, `pnpm db:up` sobe um Postgres 16 local antes do
-`db:push`. Sem Docker, basta a `DATABASE_URL` apontar para o seu banco.
+**No VS Code:** `Ctrl+Shift+B` roda a tarefa **Rodar**. `F5` sobe com depurador
+e abre o navegador conectado. As demais tarefas estão em
+[`.vscode/tasks.json`](.vscode/tasks.json).
 
 ### Acessos da base de demonstração
 
