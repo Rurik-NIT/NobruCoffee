@@ -7,7 +7,8 @@
     "node": ">=20.11"
   },
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "node scripts/preparar-banco.mjs && next dev --port 3000",
+    "dev:rapido": "next dev --port 3000",
     "build": "prisma generate && next build",
     "start": "next start --port 3000",
     "lint": "next lint",
@@ -24,7 +25,8 @@
     "setup": "pnpm db:up && pnpm db:push && pnpm db:seed",
     "verificar:rotas": "node scripts/verificar-rotas.mjs",
     "gerar:icones": "node scripts/gerar-icones.mjs",
-    "setup:local": "prisma db push && tsx prisma/seed.ts"
+    "setup:local": "prisma db push && tsx prisma/seed.ts",
+    "banco:preparar": "node scripts/preparar-banco.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
