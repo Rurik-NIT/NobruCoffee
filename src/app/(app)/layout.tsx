@@ -22,7 +22,7 @@ import { listarNotificacoes } from '@/server/modules/notificacoes/service'
  */
 export default async function LayoutApp({ children }: { children: React.ReactNode }) {
   const sessao = await sessaoAtual()
-  if (!sessao) redirect('/entrar')
+  if (!sessao) redirect('/system')
 
   const grupos: GrupoNav[] = NAVEGACAO.map((grupo) => ({
     titulo: grupo.titulo,

@@ -328,3 +328,99 @@
 .print-only {
   display: none;
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Site público da loja
+   ────────────────────────────────────────────────────────────────────────────
+   Animação aqui é ambientação, não efeito: o vapor sobe da xícara, o donut
+   gira devagar como numa vitrine giratória, e o letreiro corre como o rodapé
+   de promoção que a loja escreve na lousa. Nada entra invisível esperando
+   scroll — a página em repouso já mostra tudo.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes nobru-vapor {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scaleY(0.85);
+  }
+  35% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scaleY(1.15);
+  }
+}
+
+@keyframes nobru-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nobru-flutua {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes nobru-letreiro {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes nobru-brilho-vitrine {
+  50% {
+    opacity: 0.72;
+  }
+}
+
+.vapor path {
+  animation: nobru-vapor 3.4s ease-in-out infinite;
+}
+
+.gira-devagar {
+  animation: nobru-gira 44s linear infinite;
+}
+
+.flutua {
+  animation: nobru-flutua 7s ease-in-out infinite;
+}
+
+.brilha {
+  animation: nobru-brilho-vitrine 5s ease-in-out infinite;
+}
+
+/* Letreiro: a faixa duplica o conteúdo e corre metade da largura, então o
+   emenda é invisível e o laço nunca "salta". */
+.letreiro {
+  display: flex;
+  width: max-content;
+  animation: nobru-letreiro 38s linear infinite;
+}
+
+.letreiro-caixa:hover .letreiro {
+  animation-play-state: paused;
+}
+
+/* Entrada suave, a partir de um estado já visível: sem JS, sem observer, e
+   quem chega com a página no meio não encontra bloco em branco. */
+.surge {
+  animation: nobru-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vapor path,
+  .gira-devagar,
+  .flutua,
+  .brilha,
+  .letreiro,
+  .surge {
+    animation: none !important;
+  }
+  .surge {
+    opacity: 1;
+    transform: none;
+  }
+}

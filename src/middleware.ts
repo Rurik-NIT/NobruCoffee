@@ -6,18 +6,18 @@ const COOKIE_SESSAO = 'nobru_sessao'
  * Portaria barata.
  *
  * O middleware roda no edge e não fala com o banco, então aqui só olhamos se
- * existe cookie de sessão: quem não tem vai para /entrar sem gastar uma
+ * existe cookie de sessão: quem não tem vai para /system sem gastar uma
  * consulta. A validação de verdade (sessão viva, usuário ativo, permissão) é
  * feita em `src/app/(app)/layout.tsx` e em cada Server Action — este arquivo é
  * conveniência de roteamento, nunca a barreira de segurança.
  */
-const ROTAS_PUBLICAS = ['/', '/entrar', '/manifest.webmanifest', '/sw.js', '/offline']
+const ROTAS_PUBLICAS = ['/', '/system', '/manifest.webmanifest', '/sw.js', '/offline']
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
   const temCookie = Boolean(req.cookies.get(COOKIE_SESSAO)?.value)
 
-  if (pathname === '/entrar' && temCookie) {
+  if (pathname === '/system' && temCookie) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
 
@@ -25,7 +25,7 @@ export function middleware(req: NextRequest) {
   if (publica) return NextResponse.next()
 
   if (!temCookie) {
-    const url = new URL('/entrar', req.url)
+    const url = new URL('/system', req.url)
     if (pathname !== '/dashboard') url.searchParams.set('proximo', pathname)
     return NextResponse.redirect(url)
   }

@@ -18,7 +18,8 @@ o problema real de quem **fabrica e vende no mesmo balcão**: a venda precisa
 saber quanto de farinha saiu, a compra precisa atualizar a margem do donut, e o
 caixa precisa fechar no fim do turno.
 
-Inclui também uma **landing page pública** que apresenta o produto.
+A raiz do domínio é o **site público da loja** — história, cardápio, horário e
+endereço, sem nenhuma menção ao sistema. Quem trabalha lá entra por `/system`.
 
 | | |
 |---|---|
@@ -161,8 +162,8 @@ scripts/
   verificar-rotas.mjs      Garante que nenhum link do menu leva a 404
 src/
   app/
-    (marketing)/           Landing page pública
-    (auth)/entrar/         Login
+    (marketing)/           Site público da loja (raiz do domínio)
+    (auth)/system/         Login do sistema
     (app)/                 Sistema autenticado — 31 rotas
     offline/               Página servida pelo service worker
     layout.tsx             Fontes, tokens, toasts

@@ -1,329 +1,371 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+
 import {
-  ArrowRight,
-  BookOpen,
-  Boxes,
-  CalendarClock,
-  Check,
-  ChartNoAxesColumn,
-  ChefHat,
-  ShoppingCart,
-  Users,
-  Wallet,
-} from 'lucide-react'
+  CARDAPIO,
+  CONTATO,
+  DEPOIMENTO,
+  ENCOMENDA,
+  ENDERECO,
+  HISTORIA,
+  HORARIO_RESUMO,
+  LETREIRO,
+  LOJA,
+  MAIS_CITADOS,
+  NUMEROS,
+} from './conteudo'
+import { EstadoDaLoja } from './estado-da-loja'
+import { Circulo, Donut, Fachada, Xicara } from './ilustracoes'
 
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { CirculoNobru } from '@/components/app-shell/marca'
-import { textos } from './conteudo'
-import { MockupEstoque, MockupFicha, MockupPainel, MockupPdv, MockupProducao } from './mockups'
+/**
+ * Site da Nobru Coffee.
+ *
+ * O desenho parte do lugar real: fachada escura com madeira, luz baixa e
+ * amarelada, lousa de menu a giz. Por isso a página é escura e densa, e não
+ * clara e minimalista — quem já foi na loja tem que reconhecer.
+ */
 
+// `absolute` para o título da home não receber o sufixo do template do
+// layout raiz, que existe para as telas do sistema.
 export const metadata: Metadata = {
-  title: 'Nobru Coffee — o sistema operacional de cafeterias e donuterias',
-  description:
-    'Venda, produção, estoque, clientes e financeiro num sistema só. Feito para quem produz o que vende.',
-  openGraph: {
-    title: 'Cuide do seu café. Não da planilha.',
-    description: 'PDV, ficha técnica, produção, estoque e financeiro para cafeterias, padarias e donuterias.',
-    locale: 'pt_BR',
-    type: 'website',
-  },
+  title: { absolute: `${LOJA.nomeCompleto} — ${LOJA.linha} em ${ENDERECO.cidade}` },
 }
 
-const ICONES_RECURSO = [ShoppingCart, BookOpen, ChefHat, Boxes, Wallet, CalendarClock, Users, ChartNoAxesColumn]
-const MOCKUPS = [MockupPdv, MockupFicha, MockupEstoque, MockupPainel]
-const ANCORAS = ['pdv', 'producao', 'estoque', 'financeiro']
+function Eyebrow({ children, claro = false }: { children: React.ReactNode; claro?: boolean }) {
+  return (
+    <p
+      className={`flex items-center gap-2 text-[11px] font-bold tracking-[0.18em] uppercase ${
+        claro ? 'text-amber-nobru' : 'text-nobru-600'
+      }`}
+    >
+      <Circulo className="size-3" />
+      {children}
+    </p>
+  )
+}
 
-export default function PaginaMarketing() {
-  const t = textos()
-
+export default function Site() {
   return (
     <>
-      {/* ══ HERO ═══════════════════════════════════════════════════════════
-          A tese: o produto é o herói. Em vez de uma ilustração genérica, a
-          primeira coisa que se vê é o PDV real, com um donut esgotado — a
-          situação que define a loja. */}
-      <section className="chalkboard relative overflow-hidden">
+      {/* ── Fachada ──────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-hairline-dark bg-ink">
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 15% 20%, #F7A96C 0, transparent 45%), radial-gradient(circle at 85% 10%, #D24237 0, transparent 40%)',
-          }}
-          aria-hidden
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-40 left-1/2 size-[640px] -translate-x-1/2 rounded-full bg-nobru-500/12 blur-3xl"
         />
-        <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-16 sm:px-8 lg:pt-20 lg:pb-24">
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.15fr]">
-            <div>
-              <p className="inline-flex items-center gap-2 rounded-full border border-hairline-dark bg-ink-raised px-3 py-1.5 text-[11px] font-bold tracking-wide text-amber-nobru">
-                <CirculoNobru className="border-amber-nobru" />
-                {t.hero.selo}
-              </p>
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+          <div className="surge">
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold text-amber-nobru">
+              <span aria-hidden="true">{LOJA.assinatura}</span>
+              {LOJA.linha}
+              <span className="text-on-dark-muted/50" aria-hidden="true">
+                ·
+              </span>
+              <EstadoDaLoja className="flex items-center gap-2 text-on-dark-muted" />
+            </p>
 
-              <h1 className="mt-6 font-display text-[2.6rem] leading-[1.05] font-black text-cream sm:text-6xl">
-                {t.hero.titulo[0]}
-                <br />
-                <span className="text-nobru-400">{t.hero.titulo[1]}</span>
-              </h1>
+            <h1 className="mt-5 font-display text-[clamp(2.6rem,7vw,4.5rem)] leading-[0.98] font-extrabold tracking-tight text-cream text-balance">
+              Um jeito diferente
+              <br />
+              de servir <span className="text-nobru-400">café</span> e{' '}
+              <span className="text-amber-nobru">donuts</span>.
+            </h1>
 
-              <p className="mt-5 max-w-lg text-base leading-relaxed text-on-dark-muted">{t.hero.subtitulo}</p>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-on-dark-muted">
+              Produção própria todo dia numa esquina do {ENDERECO.bairro}, em {ENDERECO.cidade}. Donut que sai
+              quentinho, café autoral e uma vitrine que muda conforme o dia rende.
+            </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button size="lg" asChild>
-                  <Link href="/entrar">
-                    {t.hero.ctaPrimario}
-                    <ArrowRight />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="secondary" asChild className="border-hairline-dark bg-ink-raised text-cream hover:bg-ink-muted">
-                  <a href="#pdv">{t.hero.ctaSecundario}</a>
-                </Button>
-              </div>
-
-              <p className="mt-5 max-w-sm text-xs leading-relaxed text-on-dark-muted/80">{t.hero.rodape}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href={ENDERECO.mapa}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-control bg-nobru-500 px-6 py-3.5 font-bold text-white shadow-pop transition-transform hover:-translate-y-0.5 hover:bg-nobru-600"
+              >
+                Como chegar
+              </a>
+              <a
+                href={CONTATO.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-control border border-hairline-dark px-6 py-3.5 font-bold text-cream transition-colors hover:border-amber-nobru hover:text-amber-nobru"
+              >
+                Ver no Instagram
+              </a>
             </div>
 
-            <div className="lg:-mr-16">
-              <MockupPdv className="rotate-[0.5deg]" />
+            <div className="mt-9 flex items-center gap-4 border-t border-hairline-dark pt-6">
+              <p className="font-display text-3xl font-extrabold text-cream">
+                5,0<span className="text-amber-nobru">★</span>
+              </p>
+              <p className="text-sm leading-snug text-on-dark-muted">
+                228 avaliações no Google
+                <br />
+                <span className="text-on-dark-muted/70">nota cheia desde {LOJA.desde}</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="relative">
+            <Fachada className="w-full brilha" />
+            <Donut className="absolute -top-6 -right-2 w-24 gira-devagar sm:w-32" />
+            <div className="stamp absolute -bottom-3 left-2 bg-ink px-4 py-2 font-display text-sm font-extrabold text-nobru-400">
+              desde {LOJA.desde}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ══ PROVA SOCIAL ═══════════════════════════════════════════════════ */}
-      <section className="border-b border-hairline bg-paper-raised">
-        <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1fr_1.3fr] lg:items-center">
-            <div>
-              <h2 className="font-display text-2xl font-extrabold tracking-tight">{t.prova.titulo}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-body-muted">{t.prova.descricao}</p>
+      {/* ── Letreiro ─────────────────────────────────────────────────────── */}
+      <div className="letreiro-caixa overflow-hidden border-b border-nobru-700 bg-nobru-500 py-3.5">
+        <div className="letreiro">
+          {[0, 1].map((copia) => (
+            <div key={copia} className="flex shrink-0 items-center" aria-hidden={copia === 1}>
+              {LETREIRO.map((frase) => (
+                <span
+                  key={`${copia}-${frase}`}
+                  className="flex items-center gap-5 px-5 font-display text-sm font-extrabold tracking-wide text-cream uppercase"
+                >
+                  {frase}
+                  <span className="text-amber-nobru">{LOJA.assinatura}</span>
+                </span>
+              ))}
             </div>
-            <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-              {t.prova.indicadores.map((i) => (
-                <div key={i.rotulo}>
-                  <dt className="font-display text-3xl font-black text-nobru-500">{i.numero}</dt>
-                  <dd className="mt-1 text-xs leading-snug text-body-muted">{i.rotulo}</dd>
+          ))}
+        </div>
+      </div>
+
+      {/* ── A casa ───────────────────────────────────────────────────────── */}
+      <section id="historia" className="bg-paper py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-start">
+            <div className="lg:sticky lg:top-24">
+              <Eyebrow>A casa</Eyebrow>
+              <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.02] font-extrabold tracking-tight text-body text-balance">
+                Nobru é apelido de gente,
+                <br />
+                não nome de rede.
+              </h2>
+              <p className="mt-5 max-w-md leading-relaxed text-body-muted">
+                O fundador é confeiteiro, atende no salão e responde as avaliações uma por uma. Em quase dez anos a
+                loja mudou de ponto sem sair do bairro, e virou parada obrigatória da tarde no corredor da Av. São
+                João.
+              </p>
+              <Donut className="mt-10 hidden w-40 flutua lg:block" cobertura="#f7a96c" />
+            </div>
+
+            <ol className="relative space-y-8 border-l-2 border-hairline-strong pl-7">
+              {HISTORIA.map((h) => (
+                <li key={h.marco} className="relative">
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-1.5 -left-[35px] size-4 rounded-full border-[3px] border-paper bg-nobru-500"
+                  />
+                  <p className="font-mono text-xs font-bold tracking-[0.12em] text-nobru-600 uppercase">{h.marco}</p>
+                  <h3 className="mt-1.5 font-display text-xl font-extrabold text-body">{h.titulo}</h3>
+                  <p className="mt-2 leading-relaxed text-body-muted">{h.texto}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* ── BLENDS NC ────────────────────────────────────────────────────── */}
+      <section className="border-y border-hairline-dark bg-ink py-20 sm:py-28">
+        <div className="mx-auto grid max-w-6xl gap-14 px-5 sm:px-8 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+          <div className="order-2 flex justify-center lg:order-1">
+            <Xicara className="w-56 sm:w-72" />
+          </div>
+          <div className="order-1 lg:order-2">
+            <Eyebrow claro>Blends NC</Eyebrow>
+            <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.02] font-extrabold tracking-tight text-cream text-balance">
+              Café para beber.
+              <br />
+              Café para comer.
+              <br />
+              <span className="text-amber-nobru">Café em tudo.</span>
+            </h2>
+            <p className="mt-6 max-w-lg leading-relaxed text-on-dark-muted">
+              A casa criou um cardápio exclusivo de café especial — e passou a usar café também na confeitaria. É o
+              movimento que transformou a donuteria em cafeteria autoral, sem abrir mão do donut que trouxe todo
+              mundo até aqui.
+            </p>
+            <p className="mt-8 border-l-2 border-nobru-500 pl-5 text-lg leading-relaxed text-cream italic">
+              “{DEPOIMENTO.texto}”
+              <span className="mt-2 block text-sm text-on-dark-muted/80 not-italic">— {DEPOIMENTO.fonte}</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Cardápio na lousa ────────────────────────────────────────────── */}
+      <section id="cardapio" className="bg-paper py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <Eyebrow>Da vitrine</Eyebrow>
+              <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.02] font-extrabold tracking-tight text-body">
+                O que costuma ter
+              </h2>
+            </div>
+            <p className="max-w-sm text-sm leading-relaxed text-body-muted">
+              A vitrine muda conforme o dia rende — e quando acaba, acaba. Confira o que saiu hoje no Instagram
+              antes de vir de longe.
+            </p>
+          </div>
+
+          <div className="chalkboard mt-10 rounded-card p-6 shadow-card sm:p-10">
+            <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+              {CARDAPIO.map((item) => (
+                <article key={item.nome} className="border-b border-white/10 pb-6">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h3
+                      className={`font-display font-extrabold ${
+                        item.destaque ? 'text-2xl text-amber-nobru' : 'text-xl text-cream'
+                      }`}
+                    >
+                      {item.nome}
+                    </h3>
+                    <span className="shrink-0 font-mono text-[10px] tracking-[0.12em] text-cream/50 uppercase">
+                      {item.marca}
+                    </span>
+                  </div>
+                  <p className="mt-2 leading-relaxed text-cream/75">{item.texto}</p>
+                  {item.detalhe ? (
+                    <p className="mt-2 font-mono text-xs text-amber-nobru/80">{item.detalhe}</p>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+            <p className="mt-8 text-center font-display text-sm font-bold tracking-wide text-cream/60 uppercase">
+              {LOJA.assinatura} sem preço fixo aqui — o cardápio do dia sai no balcão e no Instagram
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Reconhecimento ───────────────────────────────────────────────── */}
+      <section className="border-y border-hairline bg-paper-sunken py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <Eyebrow>Quem veio, contou</Eyebrow>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {NUMEROS.map((n) => (
+              <div key={n.rotulo} className="border-t-2 border-nobru-500 pt-4">
+                <p className="font-display text-4xl font-extrabold tracking-tight text-body tabular-nums">
+                  {n.valor}
+                  <span className="text-nobru-500">{n.unidade}</span>
+                </p>
+                <p className="mt-1 font-bold text-body">{n.rotulo}</p>
+                <p className="text-sm text-body-muted">{n.apoio}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 flex flex-wrap items-center gap-3">
+            <p className="mr-2 text-sm font-bold text-body-muted">Mais citados nas avaliações:</p>
+            {MAIS_CITADOS.map((m) => (
+              <span
+                key={m.palavra}
+                className="rounded-full border border-hairline-strong bg-paper-raised px-4 py-1.5 text-sm font-semibold text-body"
+              >
+                {m.palavra}
+                <span className="ml-2 font-mono text-xs text-body-subtle tabular-nums">{m.vezes}×</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Encomendas ───────────────────────────────────────────────────── */}
+      <section id="encomendas" className="bg-paper py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="ticket relative overflow-hidden bg-cream px-6 py-12 sm:px-14 sm:py-16">
+            <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+              <div>
+                <Eyebrow>Encomendas</Eyebrow>
+                <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.02] font-extrabold tracking-tight text-ink text-balance">
+                  {ENCOMENDA.titulo}
+                </h2>
+                <p className="mt-2 font-display text-2xl font-extrabold text-nobru-600">{ENCOMENDA.chamada}</p>
+                <p className="mt-5 max-w-lg leading-relaxed text-ink/75">{ENCOMENDA.texto}</p>
+                <a
+                  href={CONTATO.whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-block rounded-control bg-ink px-6 py-3.5 font-bold text-cream transition-transform hover:-translate-y-0.5"
+                >
+                  Falar no WhatsApp
+                </a>
+              </div>
+              <div className="hidden justify-center lg:flex">
+                <Donut className="w-52 gira-devagar" cobertura="#8e2a23" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Onde e quando ────────────────────────────────────────────────── */}
+      <section id="onde" className="border-t border-hairline-dark bg-ink py-20 sm:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 sm:px-8 lg:grid-cols-2">
+          <div>
+            <Eyebrow claro>Onde estamos</Eyebrow>
+            <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.02] font-extrabold tracking-tight text-cream text-balance">
+              Na esquina da São João,
+              <br />
+              com a porta aberta.
+            </h2>
+            <address className="mt-6 text-lg leading-relaxed text-on-dark-muted not-italic">
+              {ENDERECO.rua}
+              <br />
+              {ENDERECO.bairro} — {ENDERECO.cidade}, {ENDERECO.uf}
+              <br />
+              CEP {ENDERECO.cep}
+            </address>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a
+                href={ENDERECO.mapa}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-control bg-nobru-500 px-6 py-3.5 font-bold text-white transition-colors hover:bg-nobru-600"
+              >
+                Abrir no Google Maps
+              </a>
+              <a
+                href={CONTATO.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-control border border-hairline-dark px-6 py-3.5 font-bold text-cream transition-colors hover:border-amber-nobru hover:text-amber-nobru"
+              >
+                {CONTATO.whatsapp}
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-card border border-hairline-dark bg-ink-raised p-7 sm:p-9">
+            <div className="flex items-center justify-between gap-4 border-b border-hairline-dark pb-5">
+              <p className="font-display text-lg font-extrabold text-cream">Horário</p>
+              <EstadoDaLoja className="flex items-center gap-2 text-sm font-semibold text-on-dark-muted" />
+            </div>
+            <dl className="mt-5 space-y-4">
+              {HORARIO_RESUMO.map((h) => (
+                <div key={h.quando} className="flex items-baseline justify-between gap-4 border-b border-hairline-dark/60 pb-4 last:border-0">
+                  <dt className="font-semibold text-cream">{h.quando}</dt>
+                  <dd
+                    className={`font-mono text-sm tabular-nums ${
+                      h.horas === 'Fechado' ? 'text-on-dark-muted/60' : 'text-amber-nobru'
+                    }`}
+                  >
+                    {h.horas}
+                  </dd>
                 </div>
               ))}
             </dl>
-          </div>
-        </div>
-      </section>
-
-      {/* ══ PROBLEMA ═══════════════════════════════════════════════════════ */}
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
-          <div>
-            <p className="eyebrow">{t.problema.eyebrow}</p>
-            <h2 className="mt-3 font-display text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl">
-              {t.problema.titulo}
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-body-muted">{t.problema.texto}</p>
-          </div>
-          <ul className="space-y-3 self-center">
-            {t.problema.itens.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-3 rounded-card border border-hairline bg-paper-raised px-4 py-3.5 shadow-raise"
-              >
-                <span className="mt-0.5 font-display text-lg font-black text-nobru-400">?</span>
-                <span className="text-sm font-medium">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ══ RECURSOS ═══════════════════════════════════════════════════════ */}
-      <section id="recursos" className="border-y border-hairline bg-paper-raised">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-          <div className="max-w-2xl">
-            <p className="eyebrow">{t.recursos.eyebrow}</p>
-            <h2 className="mt-3 font-display text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl">
-              {t.recursos.titulo}
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-body-muted">{t.recursos.descricao}</p>
-          </div>
-
-          <ul className="mt-12 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
-            {t.recursos.itens.map((r, i) => {
-              const Icone = ICONES_RECURSO[i] ?? ShoppingCart
-              return (
-                <li key={r.titulo}>
-                  <span className="flex size-10 items-center justify-center rounded-control bg-nobru-50 text-nobru-600">
-                    <Icone className="size-5" />
-                  </span>
-                  <h3 className="mt-3.5 text-base font-extrabold tracking-tight">{r.titulo}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-body-muted">{r.texto}</p>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      </section>
-
-      {/* ══ SHOWCASES ══════════════════════════════════════════════════════ */}
-      {t.showcases.map((s, i) => {
-        const Mockup = MOCKUPS[i]
-        const invertido = i % 2 === 1
-        return (
-          <section
-            key={s.titulo}
-            id={ANCORAS[i]}
-            className={cn('scroll-mt-20', invertido ? 'border-y border-hairline bg-paper-raised' : '')}
-          >
-            <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-              <div className={cn('grid items-center gap-12 lg:grid-cols-2 lg:gap-16')}>
-                <div className={invertido ? 'lg:order-2' : ''}>
-                  <p className="eyebrow">{s.eyebrow}</p>
-                  <h2 className="mt-3 font-display text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl">
-                    {s.titulo}
-                  </h2>
-                  <p className="mt-4 text-base leading-relaxed text-body-muted">{s.texto}</p>
-                  <ul className="mt-6 space-y-2.5">
-                    {s.pontos.map((p) => (
-                      <li key={p} className="flex items-start gap-2.5 text-sm">
-                        <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-leaf-soft">
-                          <Check className="size-2.5 text-leaf" strokeWidth={3.5} />
-                        </span>
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className={invertido ? 'lg:order-1' : ''}>
-                  <Mockup className={invertido ? '-rotate-[0.4deg]' : 'rotate-[0.4deg]'} />
-                </div>
-              </div>
-            </div>
-          </section>
-        )
-      })}
-
-      {/* ══ PRODUÇÃO EM DESTAQUE ═══════════════════════════════════════════ */}
-      <section className="chalkboard">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-            <div>
-              <p className="text-[11px] font-bold tracking-[0.18em] text-amber-nobru uppercase">O quadro da manhã</p>
-              <h2 className="mt-3 font-display text-3xl leading-tight font-black text-cream sm:text-4xl">
-                Planejado, produzido, vendido — na mesma linha
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-on-dark-muted">
-                É o quadro que a equipe olha às 7h e às 19h. De manhã, para saber quanto fazer. À noite, para saber o que
-                sobrou, o que esgotou cedo demais e o que ajustar amanhã.
-              </p>
-              <div className="mt-7 grid grid-cols-3 gap-6 border-t border-hairline-dark pt-6">
-                {[
-                  { n: '7 dias', r: 'de média para sugerir a produção' },
-                  { n: '1 clique', r: 'consome insumo e dá entrada no acabado' },
-                  { n: '0 planilha', r: 'para chegar ao custo real' },
-                ].map((i) => (
-                  <div key={i.r}>
-                    <p className="font-display text-xl font-extrabold text-cream">{i.n}</p>
-                    <p className="mt-1 text-[11px] leading-snug text-on-dark-muted">{i.r}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <MockupProducao />
-          </div>
-        </div>
-      </section>
-
-      {/* ══ PLANOS ═════════════════════════════════════════════════════════ */}
-      <section id="planos" className="scroll-mt-20">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="eyebrow">{t.planos.eyebrow}</p>
-            <h2 className="mt-3 font-display text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl">
-              {t.planos.titulo}
-            </h2>
-            <p className="mt-4 text-base text-body-muted">{t.planos.descricao}</p>
-          </div>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {t.planos.itens.map((p) => (
-              <div
-                key={p.nome}
-                className={cn(
-                  'relative flex flex-col rounded-panel border bg-paper-raised p-6',
-                  p.destaque ? 'border-nobru-500 shadow-pop lg:-my-3 lg:py-9' : 'border-hairline shadow-card',
-                )}
-              >
-                {p.destaque ? (
-                  <span className="absolute -top-3 left-6 rounded-full bg-nobru-500 px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase">
-                    Mais escolhido
-                  </span>
-                ) : null}
-                <p className="font-display text-sm font-black tracking-[0.12em] text-nobru-600">{p.nome}</p>
-                <p className="mt-2 text-sm text-body-muted">{p.alvo}</p>
-                <p className="mt-5 font-display text-4xl font-black tracking-tight">
-                  {p.preco}
-                  <span className="text-base font-bold text-body-subtle">{t.planos.periodo}</span>
-                </p>
-                <ul className="mt-6 flex-1 space-y-2.5">
-                  {p.recursos.map((r) => (
-                    <li key={r} className="flex items-start gap-2.5 text-sm">
-                      <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-leaf-soft">
-                        <Check className="size-2.5 text-leaf" strokeWidth={3.5} />
-                      </span>
-                      {r}
-                    </li>
-                  ))}
-                </ul>
-                <Button className="mt-7" full variant={p.destaque ? 'primary' : 'secondary'} asChild>
-                  <Link href="/entrar">{p.cta}</Link>
-                </Button>
-              </div>
-            ))}
-          </div>
-
-          <p className="mt-6 text-center text-xs text-body-subtle">{t.planos.rodape}</p>
-        </div>
-      </section>
-
-      {/* ══ FAQ ════════════════════════════════════════════════════════════ */}
-      <section className="border-y border-hairline bg-paper-raised">
-        <div className="mx-auto max-w-3xl px-5 py-20 sm:px-8">
-          <p className="eyebrow">{t.faq.eyebrow}</p>
-          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{t.faq.titulo}</h2>
-
-          <div className="mt-9 divide-y divide-hairline border-y border-hairline">
-            {t.faq.itens.map((f) => (
-              <details key={f.pergunta} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-4">
-                  <span className="text-base font-bold">{f.pergunta}</span>
-                  <span className="mt-1 shrink-0 font-display text-lg leading-none text-nobru-500 transition-transform group-open:rotate-45">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-3 pr-8 text-sm leading-relaxed text-body-muted">{f.resposta}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ CTA FINAL ══════════════════════════════════════════════════════ */}
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <div className="chalkboard relative overflow-hidden rounded-panel px-8 py-14 text-center sm:px-14">
-          <CirculoNobru className="mx-auto mb-5 size-4 border-amber-nobru" />
-          <h2 className="mx-auto max-w-2xl font-display text-3xl leading-tight font-black text-cream sm:text-4xl">
-            {t.ctaFinal.titulo}
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-on-dark-muted">{t.ctaFinal.texto}</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button size="lg" asChild>
-              <Link href="/entrar">
-                {t.ctaFinal.ctaPrimario}
-                <ArrowRight />
-              </Link>
-            </Button>
-            <Button size="lg" variant="secondary" asChild className="border-hairline-dark bg-ink-raised text-cream hover:bg-ink-muted">
-              <a href="#recursos">{t.ctaFinal.ctaSecundario}</a>
-            </Button>
+            <p className="mt-6 text-sm leading-relaxed text-on-dark-muted">
+              Também dá para pedir por delivery no iFood. Para encomenda de bolo, chame no WhatsApp com alguns dias
+              de antecedência.
+            </p>
           </div>
         </div>
       </section>

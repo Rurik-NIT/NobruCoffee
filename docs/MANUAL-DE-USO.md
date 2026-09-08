@@ -34,7 +34,7 @@ toda regra chata aqui existe para evitar um problema pior depois.
 
 ### Entrar
 
-Acesse `/entrar` com o **e-mail ou o apelido de acesso** e a senha que o gerente
+Acesse `/system` com o **e-mail ou o apelido de acesso** e a senha que o gerente
 cadastrou. O apelido é um atalho — `camila` em vez de
 `camila@nobrucoffee.com.br` — e quem não tem apelido entra pelo e-mail. Quem
 define isso é `Gestão › Equipe`, no campo **Apelido de acesso**.

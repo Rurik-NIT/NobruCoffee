@@ -17,6 +17,14 @@ const nextConfig: NextConfig = {
     // Server Actions receive images/base64 for product photos and encomenda references.
     serverActions: { bodySizeLimit: '4mb' },
   },
+  async redirects() {
+    return [
+      // A entrada do sistema era /entrar enquanto a raiz vendia o software.
+      // Agora a raiz é o site da loja e o sistema mora em /system; quem tiver
+      // o endereço antigo salvo continua chegando.
+      { source: '/entrar', destination: '/system', permanent: true },
+    ]
+  },
   async headers() {
     return [
       {

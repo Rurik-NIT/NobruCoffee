@@ -110,7 +110,7 @@ export const sair = acaoSimples(async () => {
 /** Sai e redireciona — usada pelo botão do menu da conta. */
 export async function sairERedirecionar() {
   await sair()
-  redirect('/entrar')
+  redirect('/system')
 }
 
 export const trocarMinhaSenha = acao(trocarSenhaSchema, async ({ senhaAtual, novaSenha }) => {
