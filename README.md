@@ -51,13 +51,15 @@ o dado vem do Server Component e volta pela Server Action.
 
 ## Começar
 
-**Pré-requisitos:** Node 20.11+, pnpm 9+, e um PostgreSQL (Docker ou serviço
-gerenciado).
+**Pré-requisitos:** Node 20.11+, pnpm 9+ e um PostgreSQL 14+.
+
+O banco pode ser **qualquer** PostgreSQL — Neon, Supabase, Railway, RDS, um
+Postgres instalado na máquina, ou o `docker compose` incluído. O sistema não
+depende de Docker; o `docker-compose.yml` existe só como conveniência.
 
 ```bash
 pnpm install
-cp .env.example .env          # ajuste DATABASE_URL e gere o AUTH_SECRET
-pnpm db:up                    # sobe o Postgres local via docker compose
+cp .env.example .env          # aponte DATABASE_URL e gere o AUTH_SECRET
 pnpm db:push                  # cria o schema
 pnpm db:seed                  # popula 45 dias de operação
 pnpm dev                      # http://localhost:3000
@@ -69,10 +71,8 @@ Gerar o segredo de sessão:
 node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 ```
 
-### Sem Docker
-
-Use qualquer PostgreSQL 14+ (Neon, Supabase, Railway, RDS ou local) e aponte o
-`DATABASE_URL`. Depois rode `pnpm db:push && pnpm db:seed`.
+Com Docker disponível, `pnpm db:up` sobe um Postgres 16 local antes do
+`db:push`. Sem Docker, basta a `DATABASE_URL` apontar para o seu banco.
 
 ### Acessos da base de demonstração
 
@@ -114,14 +114,16 @@ O `.env` é ignorado pelo git. Nenhum segredo vai para o repositório.
 | `pnpm start` | Serve o build |
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm lint` | ESLint |
-| `pnpm db:up` / `db:down` | Postgres local via docker compose |
+| `pnpm verificar:rotas` | Confere que todo item do menu tem página e toda permissão existe (roda sem banco) |
+| `pnpm gerar:icones` | Regera os ícones do PWA a partir da paleta da marca |
+| `pnpm db:up` / `db:down` | Postgres local via docker compose (opcional) |
 | `pnpm db:push` | Aplica o schema sem migration (desenvolvimento) |
 | `pnpm db:migrate` | Cria e aplica migration versionada |
 | `pnpm db:deploy` | Aplica migrations em produção |
 | `pnpm db:seed` | Popula a base de demonstração |
 | `pnpm db:reset` | Zera e repopula |
 | `pnpm db:studio` | Prisma Studio |
-| `pnpm setup` | `db:up` + `db:push` + `db:seed` |
+| `pnpm setup` | `db:up` + `db:push` + `db:seed` (requer Docker) |
 
 ---
 
@@ -133,11 +135,12 @@ prisma/
   seed.ts                  45 dias de operação sintética
 scripts/
   gerar-icones.mjs         Gera os ícones do PWA sem dependência
+  verificar-rotas.mjs      Garante que nenhum link do menu leva a 404
 src/
   app/
     (marketing)/           Landing page pública
     (auth)/entrar/         Login
-    (app)/                 Sistema autenticado — 30 rotas
+    (app)/                 Sistema autenticado — 31 rotas
     offline/               Página servida pelo service worker
     layout.tsx             Fontes, tokens, toasts
   components/
@@ -217,7 +220,7 @@ Zod, exige permissão, executa a transação e registra auditoria.
 <details>
 <summary><b>Sistema</b></summary>
 
-- RBAC com 45 permissões, 4 cargos padrão e editor de cargos
+- RBAC com 53 permissões, 4 cargos padrão e editor de cargos
 - Log de auditoria com antes/depois, IP e horário
 - Central de avisos idempotente (estoque, validade, encomenda, conta, caixa,
   aniversário)
@@ -242,6 +245,27 @@ Zod, exige permissão, executa a transação e registra auditoria.
 - Erro de banco nunca chega à tela — o envelope de ação traduz e loga
 - Cabeçalhos `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`,
   `Permissions-Policy`
+
+---
+
+## Estado de verificação
+
+O que foi executado neste repositório:
+
+| Verificação | Estado |
+|---|---|
+| `prisma validate` | ✅ schema válido |
+| `tsc --noEmit` | ✅ sem erro |
+| `next lint` | ✅ sem aviso |
+| `next build` | ✅ 40 rotas compilam |
+| `verificar:rotas` | ✅ 31 itens de menu, 53 permissões, nenhum link órfão |
+| `db:push` + `db:seed` + fluxo de venda | ⚠️ **não executado** — a máquina de desenvolvimento não tinha PostgreSQL disponível |
+
+Ou seja: **nenhuma consulta chegou a rodar contra um banco real**. O schema é
+válido e todo o código compila e passa a tipagem, mas o primeiro `pnpm db:push
+&& pnpm db:seed` é o passo que ainda precisa ser feito — e é onde qualquer
+divergência entre schema e consulta apareceria. O workflow em
+`.github/workflows/ci.yml` faz exatamente isso com um Postgres de serviço.
 
 ---
 

@@ -9,7 +9,7 @@ import { Badge, StatusDot } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/ui/states'
 import { CellStack, CodigoDoc, Table, TBody, TD, TH, THead, TR, TableWrap } from '@/components/ui/table'
-import { dataHora, duracao, moeda, numero, rotulo } from '@/lib/format'
+import { dataHora, moeda, numero, rotulo } from '@/lib/format'
 import { exigirPermissao, podeFazer } from '@/server/auth/session'
 import { listarFilaPreparo, listarPedidos } from '@/server/modules/pedidos/service'
 import { AcoesPedido, FilaPreparo } from './lista'
@@ -182,7 +182,6 @@ export default async function PaginaPedidos({
                       <TD>
                         <AcoesPedido
                           pedido={{ id: p.id, codigo: p.codigo, status: p.status, total: p.total }}
-                          podeEditar={podeEditar}
                           podeCancelar={podeCancelar}
                         />
                       </TD>

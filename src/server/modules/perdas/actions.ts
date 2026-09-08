@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 
 import { acao } from '@/server/action'
 import { registrarLog } from '@/server/audit'
@@ -12,8 +11,6 @@ import { brl, num } from '@/lib/money'
 import { moeda, quantidade as fmtQtd } from '@/lib/format'
 import { movimentar } from '@/server/modules/estoque/service'
 import { perdaSchema } from './schemas'
-
-const uuid = z.string().uuid()
 
 /**
  * Registrar perda faz duas coisas de uma vez: tira do estoque e guarda o custo.

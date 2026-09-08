@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   ArrowRight,
-  BadgePercent,
   BookOpen,
   Boxes,
   CalendarClock,
@@ -16,7 +15,7 @@ import {
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { CirculoNobru, MarcaNobru } from '@/components/app-shell/marca'
+import { CirculoNobru } from '@/components/app-shell/marca'
 import { textos } from './conteudo'
 import { MockupEstoque, MockupFicha, MockupPainel, MockupPdv, MockupProducao } from './mockups'
 

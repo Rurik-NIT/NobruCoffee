@@ -6,7 +6,7 @@ import { ChefHat, CheckCircle2, Clock, MoreHorizontal, Pencil, Ban, Wallet } fro
 
 import { cn } from '@/lib/utils'
 import { duracao, moeda, numero, rotulo } from '@/lib/format'
-import { Badge, StatusDot } from '@/components/ui/badge'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ConfirmDialog } from '@/components/ui/confirm'
 import { Dropdown, DropdownContent, DropdownItem, DropdownSeparator, DropdownTrigger } from '@/components/ui/dropdown'
@@ -125,11 +125,9 @@ export function FilaPreparo({ pedidos, podeEditar }: { pedidos: PedidoFila[]; po
 
 export function AcoesPedido({
   pedido,
-  podeEditar,
   podeCancelar,
 }: {
   pedido: { id: string; codigo: string; status: string; total: number }
-  podeEditar: boolean
   podeCancelar: boolean
 }) {
   const [cancelarAberto, setCancelarAberto] = React.useState(false)

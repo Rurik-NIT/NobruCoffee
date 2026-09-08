@@ -2,7 +2,6 @@
 
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
 
 import { acao, acaoSimples } from '@/server/action'
 import { registrarLog } from '@/server/audit'

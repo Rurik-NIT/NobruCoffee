@@ -4,7 +4,7 @@ import * as React from 'react'
 import { LogOut, MoreHorizontal, Pencil, Plus, Power, ShieldAlert, UserRound } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import { data as fmtData, dataHora, moeda, numero, telefone as fmtTel } from '@/lib/format'
+import { dataHora, moeda, numero, telefone as fmtTel } from '@/lib/format'
 import { Avatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'

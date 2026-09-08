@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 
 import { acao } from '@/server/action'
 import { registrarLog } from '@/server/audit'
@@ -21,8 +20,6 @@ import {
   recebimentoSchema,
   sugestaoCompraSchema,
 } from './schemas'
-
-const uuid = z.string().uuid()
 
 // ── Fornecedores ──────────────────────────────────────────────────────────
 

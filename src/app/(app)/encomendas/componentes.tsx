@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { CalendarClock, Clock, Plus, Trash2, Truck, UserRound } from 'lucide-react'
+import { Clock, Plus, Trash2, Truck, UserRound } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { data as fmtData, duracao, hora, moeda, numero, rotulo, telefone as fmtTel } from '@/lib/format'

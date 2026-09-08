@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Archive, Cake, Gift, MoreHorizontal, Pencil, Plus, Sparkles, UserRound } from 'lucide-react'
+import { Archive, Gift, MoreHorizontal, Pencil, Plus, Sparkles, UserRound } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { data as fmtData, moeda, numero, telefone as fmtTel } from '@/lib/format'

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ShieldCheck, UserRound } from 'lucide-react'
+import { ShieldCheck } from 'lucide-react'
 
 import { PageHeader, Panel } from '@/components/patterns/page'
 import { Button } from '@/components/ui/button'

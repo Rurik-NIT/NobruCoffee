@@ -22,18 +22,13 @@ export default async function PaginaPdv({
   const sessao = await exigirPermissao('pdv.operar')
   const { pedido: pedidoId } = await searchParams
 
-  const [caixa, catalogo, emEspera, config, mesas] = await Promise.all([
+  const [caixa, catalogo, emEspera, config] = await Promise.all([
     caixaAbertoDaLoja(db, sessao.lojaId),
     catalogoParaPdv(sessao.lojaId),
     listarEmEspera(sessao.lojaId),
     db.configuracao.findUnique({
       where: { lojaId: sessao.lojaId },
       select: { descontoMaximoOperador: true, taxaServicoPercentual: true, taxaEntregaPadrao: true, valorPorPonto: true },
-    }),
-    db.mesa.findMany({
-      where: { lojaId: sessao.lojaId, ativo: true },
-      orderBy: { numero: 'asc' },
-      select: { id: true, numero: true, nome: true, status: true },
     }),
   ])
 
@@ -66,7 +61,6 @@ export default async function PaginaPdv({
       caixa={{ id: caixa.id, codigo: caixa.codigo }}
       catalogo={catalogo}
       emEspera={emEspera.map((p) => ({ ...p, abertoEm: p.abertoEm.toISOString() }))}
-      mesas={mesas}
       config={{
         descontoMaximoOperador: Number(config?.descontoMaximoOperador ?? 10),
         taxaServicoPercentual: Number(config?.taxaServicoPercentual ?? 0),

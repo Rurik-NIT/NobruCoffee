@@ -69,7 +69,7 @@ export async function movimentar(tx: Tx, entrada: EntradaMovimento) {
   if ('ingredienteId' in entrada) {
     return movimentarIngrediente(tx, entrada, entrada.ingredienteId, delta, quantidadeAbs, entradaMov)
   }
-  return movimentarProduto(tx, entrada, entrada.produtoId, delta, quantidadeAbs, entradaMov)
+  return movimentarProduto(tx, entrada, entrada.produtoId, delta, quantidadeAbs)
 }
 
 async function movimentarIngrediente(
@@ -144,7 +144,6 @@ async function movimentarProduto(
   produtoId: string,
   delta: number,
   quantidadeAbs: number,
-  entradaMov: boolean,
 ) {
   const antes = await tx.produto.findUnique({
     where: { id: produtoId },

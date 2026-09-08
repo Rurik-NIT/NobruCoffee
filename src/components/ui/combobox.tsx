@@ -47,6 +47,7 @@ export function Combobox({
   permiteLimpar?: boolean
 }) {
   const [aberto, setAberto] = React.useState(false)
+  const idLista = React.useId()
   const selecionada = opcoes.find((o) => o.valor === value)
 
   return (
@@ -57,6 +58,8 @@ export function Combobox({
           type="button"
           role="combobox"
           aria-expanded={aberto}
+          aria-controls={idLista}
+          aria-haspopup="listbox"
           disabled={disabled}
           className={cn(
             'flex h-10 w-full items-center justify-between gap-2 rounded-control border border-hairline-strong bg-paper-raised px-3 text-sm',
@@ -86,7 +89,7 @@ export function Combobox({
                 className="h-10 w-full bg-transparent text-sm outline-none placeholder:text-body-subtle"
               />
             </div>
-            <Command.List className="max-h-64 overflow-y-auto p-1">
+            <Command.List id={idLista} className="max-h-64 overflow-y-auto p-1">
               <Command.Empty className="px-3 py-6 text-center text-sm text-body-muted">{vazioTexto}</Command.Empty>
               {permiteLimpar && value ? (
                 <Command.Item

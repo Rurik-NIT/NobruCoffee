@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/ui/states'
 import { CodigoDoc, Table, TBody, TD, TH, THead, TR, TableWrap } from '@/components/ui/table'
-import { data as fmtData, decimal, moeda, numero, percentual, rotulo } from '@/lib/format'
+import { data as fmtData, decimal, moeda, percentual, rotulo } from '@/lib/format'
 import { exigirPermissao } from '@/server/auth/session'
 import { listarOrdens } from '@/server/modules/producao/service'
 

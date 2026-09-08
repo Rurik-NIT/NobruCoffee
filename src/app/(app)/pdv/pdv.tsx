@@ -78,7 +78,6 @@ export function Pdv({
   caixa,
   catalogo,
   emEspera,
-  mesas,
   config,
   pedidoAberto,
   permissoes,
@@ -86,7 +85,6 @@ export function Pdv({
   caixa: { id: string; codigo: string }
   catalogo: CatalogoPdv
   emEspera: Array<{ id: string; codigo: string; tipo: string; abertoEm: string; total: number; itens: number; cliente: string | null }>
-  mesas: Array<{ id: string; numero: number; nome: string | null; status: string }>
   config: { descontoMaximoOperador: number; taxaServicoPercentual: number; taxaEntregaPadrao: number; valorPorPonto: number }
   pedidoAberto: PedidoAberto | null
   permissoes: { descontoLivre: boolean; cancelarItem: boolean; cadastrarCliente: boolean }
@@ -415,7 +413,6 @@ export function Pdv({
               taxaEntrega={tipo === 'DELIVERY' ? taxaEntrega : 0}
               total={total}
               cupom={cupom}
-              permissoes={permissoes}
               onAbrirDesconto={() => setDescontoAberto(true)}
               onAbrirCliente={() => setClienteAberto(true)}
               onLimpar={limparVenda}
@@ -463,7 +460,6 @@ export function Pdv({
               taxaEntrega={tipo === 'DELIVERY' ? taxaEntrega : 0}
               total={total}
               cupom={cupom}
-              permissoes={permissoes}
               onAbrirDesconto={() => setDescontoAberto(true)}
               onAbrirCliente={() => setClienteAberto(true)}
               onLimpar={limparVenda}
@@ -561,7 +557,6 @@ function Comanda({
   taxaEntrega,
   total,
   cupom,
-  permissoes,
   onAbrirDesconto,
   onAbrirCliente,
   onLimpar,
@@ -586,7 +581,6 @@ function Comanda({
   taxaEntrega: number
   total: number
   cupom: string
-  permissoes: { cancelarItem: boolean }
   onAbrirDesconto: () => void
   onAbrirCliente: () => void
   onLimpar: () => void

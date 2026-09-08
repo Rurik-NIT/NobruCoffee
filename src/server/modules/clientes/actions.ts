@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 
 import { acao } from '@/server/action'
 import { registrarLog } from '@/server/audit'
@@ -19,8 +18,6 @@ import {
   cupomSchema,
 } from './schemas'
 import { buscarClientes } from './service'
-
-const uuid = z.string().uuid()
 
 export const salvarCliente = acao(clienteSchema, async (entrada) => {
   const sessao = await exigirPermissao('clientes.gerenciar')

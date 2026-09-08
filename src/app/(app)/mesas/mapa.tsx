@@ -12,7 +12,6 @@ import { Dialog, DialogBody, DialogContent, DialogFooter, DialogHeader, DialogTi
 import { Field, FieldRow } from '@/components/ui/field'
 import { Input, DateTimeInput, QuantityInput } from '@/components/ui/input'
 import { SelectSimples } from '@/components/ui/select'
-import { Panel } from '@/components/patterns/page'
 import { toast } from '@/components/ui/toast'
 import { useAcao } from '@/hooks/use-acao'
 import { abrirPedido } from '@/server/modules/pedidos/actions'

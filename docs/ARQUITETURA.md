@@ -63,7 +63,7 @@ sobre o mesmo lançamento.
 
 ### Permissão é código, não tabela
 
-O catálogo de 45 permissões vive em `src/server/auth/permissions.ts`. O banco
+O catálogo de 53 permissões vive em `src/server/auth/permissions.ts`. O banco
 guarda só **quais chaves** cada cargo recebeu (`cargos.permissoes String[]`).
 
 Motivo: a lista de permissões é comportamento do sistema, versionada junto com as

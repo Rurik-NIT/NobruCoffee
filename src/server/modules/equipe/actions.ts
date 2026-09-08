@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 
 import { acao } from '@/server/action'
 import { registrarLog } from '@/server/audit'
@@ -12,8 +11,6 @@ import { db } from '@/server/db'
 import { ErroDeNegocio } from '@/server/errors'
 import { slugify } from '@/lib/utils'
 import { alternarUsuarioSchema, cargoSchema, idUsuarioSchema, usuarioSchema } from './schemas'
-
-const uuid = z.string().uuid()
 
 export const salvarUsuario = acao(usuarioSchema, async (entrada) => {
   const sessao = await exigirPermissao('equipe.gerenciar')
