@@ -1,0 +1,330 @@
+@import 'tailwindcss';
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NOBRU COFFEE — DESIGN TOKENS
+   Extraídos da identidade real da marca (docs/referencias/NOBRU_COFFEE_BRIEF.md):
+   selo vermelho tijolo, lettering creme, "COFFEE" em âmbar, uniformes preto
+   fosco, madeira quente do salão e o verde das plantas da fachada.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Marca ───────────────────────────────────────────────────────────── */
+  --color-nobru-50: #fdf3f1;
+  --color-nobru-100: #f3d9d5;
+  --color-nobru-200: #e9b7b0;
+  --color-nobru-300: #de9088;
+  --color-nobru-400: #d86a5f;
+  --color-nobru-500: #d24237; /* Vermelho Nobru — 47% dos pixels do logo */
+  --color-nobru-600: #b3352c;
+  --color-nobru-700: #8e2a23;
+  --color-nobru-800: #6b201b;
+  --color-nobru-900: #491612;
+
+  --color-cream: #ffebd6; /* lettering "No bru" */
+  --color-amber-nobru: #f7a96c; /* palavra "COFFEE" */
+
+  /* ── Superfícies (papel quente) ──────────────────────────────────────── */
+  --color-paper: #faf3e9;
+  --color-paper-raised: #fffdf8;
+  --color-paper-sunken: #f2e9dc;
+
+  /* ── Chrome escuro (uniformes / fachada) ─────────────────────────────── */
+  --color-ink: #1c1a19;
+  --color-ink-raised: #262322;
+  --color-ink-muted: #3a3533;
+
+  /* ── Texto ───────────────────────────────────────────────────────────── */
+  --color-body: #1c1a19;
+  --color-body-muted: #6b625b;
+  --color-body-subtle: #948a82;
+  --color-on-dark: #f6ece0;
+  --color-on-dark-muted: #a89c90;
+
+  /* ── Linhas ──────────────────────────────────────────────────────────── */
+  --color-hairline: #e8dcc9;
+  --color-hairline-strong: #d8c8b0;
+  --color-hairline-dark: #35302e;
+
+  /* ── Semânticos ──────────────────────────────────────────────────────── */
+  --color-leaf: #2e7d5b; /* verde das plantas da fachada = sucesso */
+  --color-leaf-soft: #e3f2ea;
+  --color-caution: #b8730f; /* alerta, derivado do âmbar */
+  --color-caution-soft: #fdf0dd;
+  --color-danger: #c0392b;
+  --color-danger-soft: #fbe6e3;
+  --color-info: #6b4a2f; /* madeira do salão */
+  --color-info-soft: #f1e8de;
+
+  /* ── Tipografia ──────────────────────────────────────────────────────── */
+  --font-display: var(--font-nunito), 'Trebuchet MS', system-ui, sans-serif;
+  --font-sans: var(--font-figtree), 'Segoe UI', system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), 'Consolas', ui-monospace, monospace;
+
+  --text-2xs: 0.6875rem; /* 11px — rótulos de tabela */
+  --text-2xs--line-height: 1rem;
+
+  /* ── Raios (o selo do logo é um quadrado arredondado) ────────────────── */
+  --radius-control: 0.625rem;
+  --radius-card: 0.875rem;
+  --radius-panel: 1.125rem;
+
+  /* ── Sombras quentes (nunca cinza-azuladas) ──────────────────────────── */
+  --shadow-raise: 0 1px 2px rgba(28, 26, 25, 0.05), 0 1px 3px rgba(28, 26, 25, 0.04);
+  --shadow-card: 0 1px 2px rgba(28, 26, 25, 0.05), 0 10px 24px -14px rgba(28, 26, 25, 0.22);
+  --shadow-pop: 0 2px 6px rgba(28, 26, 25, 0.08), 0 18px 40px -18px rgba(28, 26, 25, 0.32);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  * {
+    border-color: var(--color-hairline);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* Dinheiro e quantidades sempre alinham em coluna. */
+  th,
+  td,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-nobru-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-nobru-100);
+    color: var(--color-nobru-800);
+  }
+
+  /* Scrollbar discreta, no tom do papel. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-hairline-strong);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-body-subtle);
+    background-clip: content-box;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ELEMENTOS DE ASSINATURA
+   O sistema fala a língua da loja: comanda de papel, carimbo de SOLD OUT,
+   lousa de giz. Estes três utilitários são o sotaque visual do produto.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Comanda: papel com borda serrilhada embaixo. Usada no carrinho do PDV,
+     no recibo e no fechamento de caixa. */
+  .ticket {
+    position: relative;
+    background: var(--color-paper-raised);
+    box-shadow: var(--shadow-card);
+  }
+  .ticket::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -9px;
+    height: 10px;
+    background: var(--color-paper-raised);
+    -webkit-mask-image: radial-gradient(circle at 5px 0, transparent 5px, black 5.5px);
+    mask-image: radial-gradient(circle at 5px 0, transparent 5px, black 5.5px);
+    -webkit-mask-size: 10px 10px;
+    mask-size: 10px 10px;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+  }
+
+  /* Carimbo: "SOLD OUT", "CANCELADO", "PAGO". Rotação e traço grosso imitam
+     um carimbo de borracha batido à mão. */
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-nobru-600);
+    border: 2px solid var(--color-nobru-600);
+    border-radius: 4px;
+    transform: rotate(-4deg);
+    opacity: 0.85;
+  }
+  .stamp[data-tone='leaf'] {
+    color: var(--color-leaf);
+    border-color: var(--color-leaf);
+  }
+  .stamp[data-tone='ink'] {
+    color: var(--color-body-muted);
+    border-color: var(--color-body-muted);
+  }
+
+  /* Lousa: cabeçalhos escuros com texto creme, como o menu a giz da fachada. */
+  .chalkboard {
+    background: var(--color-ink);
+    color: var(--color-cream);
+    background-image: radial-gradient(rgba(255, 235, 214, 0.045) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  /* Rótulo de seção: caixa alta espaçada, como as etiquetas da vitrine. */
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-body-subtle);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMAÇÕES (poucas, curtas, com propósito)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes nobru-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes nobru-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes nobru-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes nobru-slide-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes nobru-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-in-soft {
+  animation: nobru-in 0.28s var(--ease-out-soft) both;
+}
+.animate-fade {
+  animation: nobru-fade 0.2s ease-out both;
+}
+
+/* Skeleton com brilho no tom do papel. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-paper-sunken);
+  border-radius: var(--radius-control);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: nobru-shimmer 1.4s infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   IMPRESSÃO — recibos de 80mm e fechamento de caixa
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media print {
+  @page {
+    margin: 4mm;
+  }
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .ticket {
+    box-shadow: none;
+  }
+  .ticket::after {
+    display: none;
+  }
+}
+
+.print-only {
+  display: none;
+}
