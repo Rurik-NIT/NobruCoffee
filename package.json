@@ -26,7 +26,8 @@
     "verificar:rotas": "node scripts/verificar-rotas.mjs",
     "gerar:icones": "node scripts/gerar-icones.mjs",
     "setup:local": "prisma db push && tsx prisma/seed.ts",
-    "banco:preparar": "node scripts/preparar-banco.mjs"
+    "banco:preparar": "node scripts/preparar-banco.mjs",
+    "build:check": "node scripts/build-conferencia.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

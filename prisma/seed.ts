@@ -720,14 +720,80 @@ async function main() {
 
   console.log(`  ✓ ${clientes.length} clientes e 3 cupons`)
 
+  // ── Fichas técnicas resolvidas em unidade de controle ───────────────────
+  // Precisam existir antes das compras: é a ficha que diz quanto cada insumo
+  // sai por unidade produzida, e é disso que sai o tamanho do pedido.
+  const fichasPorProduto = new Map<string, Array<{ ingredienteId: string; sku: string; quantidade: number }>>()
+  for (const d of defsProdutos) {
+    if (!d.ficha) continue
+    const fatores: Record<string, number> = { G: 1, KG: 1000, ML: 1, L: 1000, UN: 1, PCT: 1, CX: 1 }
+    fichasPorProduto.set(
+      d.sku,
+      d.ficha.map(([sku, qtd, un, perda]) => ({
+        ingredienteId: ingredientes[sku].id,
+        sku,
+        quantidade:
+          ((qtd * (fatores[un] ?? 1)) / (fatores[ingredientes[sku].unidade] ?? 1)) * (1 + (perda ?? 0) / 100),
+      })),
+    )
+  }
+
+  // ── Consumo diário estimado por insumo ──────────────────────────────────
+  /**
+   * Quanto de cada insumo o dia gasta, em média.
+   *
+   * Sem isso a compra era dimensionada por um `maximo` fixo do cadastro, que
+   * não tem relação nenhuma com o que a operação consome — e 45 dias de
+   * produção derrubavam o saldo para muito abaixo de zero. Aqui o número sai da
+   * mesma matemática que o laço dos dias usa, então a compra acompanha a
+   * receita de verdade.
+   *
+   * As constantes são as médias dos sorteios do laço; ver as chamadas de
+   * `entre()` e `inteiro()` na seção de produção e vendas.
+   */
+  /** Dias de consumo que a carga inicial cobre. */
+  const DIAS_COBERTURA_INICIAL = 24
+  /** Abaixo disto o insumo entra na compra do dia (inclui os 2 dias de entrega). */
+  const DIAS_PONTO_DE_PEDIDO = 9
+  /** Dias que cada reposição cobre. */
+  const DIAS_COBERTURA_REPOSICAO = 16
+
+  const CHANCE_DE_PRODUZIR = 0.85 // talvez(0.85) na escolha do que vai ao forno
+  const LOTE_MEDIO = 3.0 // média de entre(2.4, 3.6)
+  const PEDIDOS_MEDIA_DIA = 55 // média de entre(38,58) já com semana e crescimento
+  const ITENS_MEDIA_PEDIDO = 2.5 // média de inteiro(1, 4)
+
+  const pesoVendavel = defsProdutos.reduce((a, d) => a + produtos[d.sku].peso, 0)
+  const consumoDiario: Record<string, number> = {}
+  for (const d of defsProdutos) {
+    const ficha = fichasPorProduto.get(d.sku)
+    if (!ficha) continue
+    // Produzido sai na produção da manhã; o resto consome a ficha na venda.
+    const unidadesPorDia =
+      d.tipo === 'PRODUZIDO'
+        ? CHANCE_DE_PRODUZIR * produtos[d.sku].peso * LOTE_MEDIO
+        : PEDIDOS_MEDIA_DIA * ITENS_MEDIA_PEDIDO * (produtos[d.sku].peso / pesoVendavel)
+    for (const linha of ficha) {
+      consumoDiario[linha.sku] = (consumoDiario[linha.sku] ?? 0) + linha.quantidade * unidadesPorDia
+    }
+  }
+
+  /** Quanto comprar de um insumo para cobrir N dias, com piso para baixo giro. */
+  function quantoComprar(sku: string, dias: number) {
+    const def = defsIngredientes.find((d) => d.sku === sku)!
+    const porConsumo = (consumoDiario[sku] ?? 0) * dias * entre(0.95, 1.15)
+    // Insumo sem ficha (uso esporádico) ainda precisa de giro: usa o cadastro.
+    const piso = def.maximo * 0.3
+    return Math.max(Math.round(porConsumo), Math.round(piso))
+  }
+
   // ── Compras recebidas (formam o estoque e o custo médio) ────────────────
   let contadorCompra = 0
-  async function comprar(fornecedorId: string, skus: string[], quando: Date, fator = 1) {
+  async function comprar(fornecedorId: string, skus: string[], quando: Date, diasCobertura = 20) {
     contadorCompra += 1
     const codigo = `PC-${String(contadorCompra).padStart(6, '0')}`
     const itens = skus.map((sku) => {
-      const def = defsIngredientes.find((d) => d.sku === sku)!
-      const quantidade = Math.round(def.maximo * fator * entre(0.75, 1))
+      const quantidade = quantoComprar(sku, diasCobertura)
       const preco = ingredientes[sku].custo * entre(0.94, 1.08)
       return { sku, quantidade, precoUnitario: Math.round(preco * 10000) / 10000 }
     })
@@ -835,16 +901,38 @@ async function main() {
     skusPorFornecedor.set(d.fornecedor, lista)
   }
 
-  // Compra inicial grande + reposições ao longo do histórico
+  // Carga inicial: cobre as primeiras semanas antes da primeira reposição.
   for (const [fornecedorId, skus] of skusPorFornecedor) {
-    await comprar(fornecedorId, skus, diasAtras(DIAS_HISTORICO + 3), 1.4)
+    await comprar(fornecedorId, skus, diasAtras(DIAS_HISTORICO + 3), DIAS_COBERTURA_INICIAL)
   }
-  for (const dia of [32, 24, 17, 10, 4]) {
-    for (const [fornecedorId, skus] of skusPorFornecedor) {
-      if (talvez(0.72)) await comprar(fornecedorId, skus.filter(() => talvez(0.8)), diasAtras(dia), 0.55)
+
+  /**
+   * Reposição do dia, chamada no início de cada dia de operação.
+   *
+   * Compra o que está abaixo do ponto de pedido, agrupado por fornecedor —
+   * o mesmo comportamento que a tela de reposição sugerida propõe. Substituiu
+   * a lista de datas fixas, que comprava sempre a mesma coisa independente do
+   * que a loja tinha gasto, e por isso deixava o saldo negativo.
+   *
+   * O pedido é datado de dois dias antes para que `comprar()` o receba hoje —
+   * o prazo de entrega que o resto do seed assume.
+   */
+  async function reporEstoque(dia: number) {
+    const faltando = new Map<string, string[]>()
+    for (const d of defsIngredientes) {
+      const pontoDePedido = (consumoDiario[d.sku] ?? 0) * DIAS_PONTO_DE_PEDIDO
+      if (pontoDePedido === 0) continue // insumo sem ficha: só a carga inicial
+      if ((saldos[d.sku] ?? 0) >= pontoDePedido) continue
+      const lista = faltando.get(d.fornecedor) ?? []
+      lista.push(d.sku)
+      faltando.set(d.fornecedor, lista)
+    }
+    for (const [fornecedorId, skus] of faltando) {
+      await comprar(fornecedorId, skus, diasAtras(dia + 2), DIAS_COBERTURA_REPOSICAO)
     }
   }
-  console.log(`  ✓ ${contadorCompra} pedidos de compra recebidos`)
+
+  console.log(`  ✓ ${contadorCompra} pedidos de compra recebidos na carga inicial`)
 
   // ── Produção, vendas e caixas, dia a dia ────────────────────────────────
   const skusProduzidos = defsProdutos.filter((d) => d.tipo === 'PRODUZIDO').map((d) => d.sku)
@@ -885,25 +973,15 @@ async function main() {
   let contadorOp = 0
   const totaisPorProduto: Record<string, number> = {}
 
-  const fichasPorProduto = new Map<string, Array<{ ingredienteId: string; sku: string; quantidade: number }>>()
-  for (const d of defsProdutos) {
-    if (!d.ficha) continue
-    const fatores: Record<string, number> = { G: 1, KG: 1000, ML: 1, L: 1000, UN: 1, PCT: 1, CX: 1 }
-    fichasPorProduto.set(
-      d.sku,
-      d.ficha.map(([sku, qtd, un, perda]) => ({
-        ingredienteId: ingredientes[sku].id,
-        sku,
-        quantidade:
-          ((qtd * (fatores[un] ?? 1)) / (fatores[ingredientes[sku].unidade] ?? 1)) * (1 + (perda ?? 0) / 100),
-      })),
-    )
-  }
-
   for (let dia = DIAS_HISTORICO; dia >= 0; dia--) {
     const data = diasAtras(dia)
     const diaSemana = data.getDay()
     if (diaSemana === 1) continue // segunda: fechado
+
+    // ── Reposição antes de abrir ──
+    // Vem primeiro para a mercadoria entrar no saldo antes de a produção
+    // consumir: é a ordem real da manhã, e é o que mantém o saldo positivo.
+    await reporEstoque(dia)
 
     // ── Produção da manhã ──
     contadorOp += 1

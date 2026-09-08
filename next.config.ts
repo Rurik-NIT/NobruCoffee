@@ -3,6 +3,16 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  /**
+   * Pasta de saída, sobrescrevível por variável de ambiente.
+   *
+   * `next build` e `next dev` escrevem no mesmo `.next`. Rodar um build de
+   * conferência com o servidor de desenvolvimento no ar troca o manifesto sob
+   * os pés dele, e a página passa a pedir um CSS que não existe mais — a tela
+   * aparece sem estilo nenhum. `build:check` usa `.next-check` justamente para
+   * que conferir nunca derrube quem está com o `dev` aberto.
+   */
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   experimental: {
     // Server Actions receive images/base64 for product photos and encomenda references.
     serverActions: { bodySizeLimit: '4mb' },

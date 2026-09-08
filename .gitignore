@@ -19,3 +19,4 @@ coverage/
 /prisma/*.db-journal
 /public/uploads/*
 !/public/uploads/.gitkeep
+.next-check/

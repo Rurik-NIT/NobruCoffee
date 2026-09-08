@@ -69,9 +69,9 @@
     },
     {
       "label": "Conferir tudo (tipos, lint, rotas)",
-      "detail": "O que o CI roda. Não precisa de banco.",
+      "detail": "O que o CI roda. Não precisa de banco, e não derruba o servidor de desenvolvimento.",
       "type": "shell",
-      "command": "bun run typecheck; bun run lint; bun run verificar:rotas",
+      "command": "bun run typecheck; bun run lint; bun run verificar:rotas; bun run build:check",
       "options": { "shell": { "executable": "powershell.exe", "args": ["-NoProfile", "-Command"] } },
       "problemMatcher": ["$tsc"],
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
