@@ -166,12 +166,18 @@ if (erro && codigo(erro) === 'P1000') {
   parar(`O PostgreSQL recusou o usuário "${usuario}".`, [
     'O usuário não existe ou a senha está diferente da que está no .env.',
     '',
-    `${FORTE}Para criar o usuário e o banco${FIM} (o psql vai pedir a senha do postgres):`,
+    'É o único passo que precisa de superusuário, e por isso o único que este',
+    'script não faz. Depois dele, tudo o resto é automático.',
     '',
-    `  ${FORTE}& '${CAMINHO_PSQL}' -U postgres -c "CREATE ROLE ${usuario} LOGIN PASSWORD '${url.password || 'senha'}' CREATEDB;" -c "CREATE DATABASE ${nomeBanco} OWNER ${usuario};"${FIM}`,
+    `${FORTE}Cole no PowerShell${FIM} — o psql vai pedir a senha do postgres:`,
     '',
-    `${FORTE}Ou${FIM}, se você já tem um banco em outro lugar (Neon, Supabase, outro Postgres),`,
-    'troque a DATABASE_URL no .env por ele e rode de novo — não precisa de nada local.',
+    `  ${FORTE}& '${CAMINHO_PSQL}' -U postgres -c "CREATE ROLE ${usuario} LOGIN PASSWORD '${url.password || 'senha'}' CREATEDB;"${FIM}`,
+    '',
+    `${CINZA}No VS Code: Run Task › "Criar o usuário do banco no PostgreSQL".${FIM}`,
+    '',
+    `${FORTE}Se você não sabe a senha do postgres${FIM}, use um banco que já existe:`,
+    'troque a DATABASE_URL no .env por um Neon, Supabase ou outro Postgres seu',
+    '— aí não precisa de nada local e este script segue daqui sozinho.',
   ])
 }
 
