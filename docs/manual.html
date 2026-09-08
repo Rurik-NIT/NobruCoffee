@@ -1,0 +1,1203 @@
+<title>Manual da Operação Nobru</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Bitter:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  color-scheme: light;
+
+  --paper: #faf3e9;
+  --paper-raised: #fffdf8;
+  --paper-sunken: #f2e7d6;
+  --ink: #241f1c;
+  --ink-2: #5c4b41;
+  --ink-3: #8a7566;
+  --hairline: #e6d8c4;
+  --hairline-strong: #d3bfa4;
+  --brick: #d24237;
+  --brick-ink: #9e2e26;
+  --brick-wash: #fbe6e0;
+  --amber: #f7a96c;
+  --amber-ink: #8f5410;
+  --amber-wash: #fdefdd;
+  --wood: #6b4a2f;
+  --leaf: #2e7d5b;
+  --leaf-wash: #e3f1e8;
+  --cream: #ffebd6;
+  --board: #1c1a19;
+  --board-ink: #ffebd6;
+  --board-ink-2: #b0a08c;
+
+  --f-display: 'Bricolage Grotesque', 'Trebuchet MS', system-ui, sans-serif;
+  --f-body: 'Bitter', Georgia, 'Times New Roman', serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+
+  --r-tag: 3px;
+  --r-box: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #191512;
+    --paper-raised: #221d18;
+    --paper-sunken: #120f0c;
+    --ink: #f4e7d5;
+    --ink-2: #c4b2a0;
+    --ink-3: #9a8770;
+    --hairline: #342a20;
+    --hairline-strong: #4d3d2d;
+    --brick: #e9695c;
+    --brick-ink: #f0917f;
+    --brick-wash: #33201c;
+    --amber: #f7a96c;
+    --amber-ink: #e7a44a;
+    --amber-wash: #2c2318;
+    --wood: #c69a6f;
+    --leaf: #5fbf92;
+    --leaf-wash: #16261e;
+    --board: #100e0c;
+    --board-ink: #ffebd6;
+    --board-ink-2: #a89478;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #191512;
+  --paper-raised: #221d18;
+  --paper-sunken: #120f0c;
+  --ink: #f4e7d5;
+  --ink-2: #c4b2a0;
+  --ink-3: #9a8770;
+  --hairline: #342a20;
+  --hairline-strong: #4d3d2d;
+  --brick: #e9695c;
+  --brick-ink: #f0917f;
+  --brick-wash: #33201c;
+  --amber: #f7a96c;
+  --amber-ink: #e7a44a;
+  --amber-wash: #2c2318;
+  --wood: #c69a6f;
+  --leaf: #5fbf92;
+  --leaf-wash: #16261e;
+  --board: #100e0c;
+  --board-ink: #ffebd6;
+  --board-ink-2: #a89478;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: 0;
+}
+h4 { margin: 0; }
+p { margin: 0; }
+a { color: var(--brick-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { color: var(--brick); }
+:focus-visible { outline: 2px solid var(--brick); outline-offset: 3px; border-radius: 2px; }
+strong { font-weight: 600; }
+
+/* endereço de tela — a convenção do próprio manual */
+.tela {
+  font-family: var(--f-mono);
+  font-size: 0.8125em;
+  font-weight: 700;
+  color: var(--brick-ink);
+  background: var(--brick-wash);
+  padding: 0.15em 0.42em;
+  border-radius: var(--r-tag);
+  white-space: nowrap;
+}
+.chave {
+  font-family: var(--f-mono);
+  font-size: 0.8125em;
+  color: var(--ink-2);
+  background: var(--paper-sunken);
+  padding: 0.15em 0.38em;
+  border-radius: var(--r-tag);
+  white-space: nowrap;
+}
+
+.folha {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: clamp(28px, 5vw, 68px) clamp(20px, 5vw, 56px) 96px;
+}
+
+/* ---------------- capa ---------------- */
+.capa {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 330px);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+  padding-bottom: 36px;
+  border-bottom: 2px solid var(--ink);
+}
+@media (max-width: 880px) { .capa { grid-template-columns: 1fr; } }
+
+.capa-texto { display: flex; flex-direction: column; gap: 20px; }
+.marca { display: flex; align-items: center; gap: 11px; }
+.marca-nome {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brick-ink);
+}
+.capa h1 { font-size: clamp(2.25rem, 6.4vw, 3.5rem); }
+.capa-sub { font-size: clamp(1.0625rem, 2vw, 1.1875rem); color: var(--ink-2); max-width: 48ch; }
+.capa-sub strong { color: var(--ink); }
+.capa-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 22px;
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.imprimir {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--hairline-strong);
+  border-radius: var(--r-tag);
+  padding: 7px 13px;
+  cursor: pointer;
+}
+.imprimir:hover { border-color: var(--brick); color: var(--brick-ink); }
+
+/* ---------------- comanda de 80 mm ---------------- */
+.ticket {
+  background: var(--cream);
+  color: #241f1c;
+  padding: 22px 22px 32px;
+  font-family: var(--f-mono);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  -webkit-mask-image: radial-gradient(circle at 6px 100%, transparent 5px, #000 5.5px);
+  mask-image: radial-gradient(circle at 6px 100%, transparent 5px, #000 5.5px);
+  -webkit-mask-size: 12px 100%;
+  mask-size: 12px 100%;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+.ticket-cab { text-align: center; border-bottom: 1px dashed #ab947c; padding-bottom: 12px; margin-bottom: 14px; }
+.ticket-cab b {
+  display: block;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.ticket-cab span { font-size: 0.6875rem; letter-spacing: 0.08em; color: #6d5c4a; }
+.ticket ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; counter-reset: passo; }
+.ticket li { display: grid; grid-template-columns: 1.5em minmax(0, 1fr); gap: 7px; counter-increment: passo; }
+.ticket li::before { content: counter(passo) "."; font-weight: 700; color: #9e2e26; }
+.ticket-pe { margin-top: 14px; padding-top: 12px; border-top: 1px dashed #ab947c; font-size: 0.6875rem; line-height: 1.5; color: #6d5c4a; }
+.ticket .tela { background: #f6d9bd; color: #8c2b23; }
+
+/* ---------------- filtro por cargo ---------------- */
+.filtro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.filtro-rotulo {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.filtro-lista { display: flex; flex-wrap: wrap; gap: 8px; }
+.filtro-btn {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1.5px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+.filtro-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+.filtro-btn[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.filtro-aviso { font-family: var(--f-mono); font-size: 0.75rem; color: var(--ink-3); }
+
+/* ---------------- duas colunas ---------------- */
+.corpo {
+  display: grid;
+  grid-template-columns: 226px minmax(0, 68ch);
+  gap: clamp(32px, 6vw, 72px);
+  justify-content: center;
+  align-items: start;
+  padding-top: 44px;
+}
+@media (max-width: 1060px) { .corpo { grid-template-columns: minmax(0, 1fr); } }
+
+.trilho { position: sticky; top: 22px; }
+@media (max-width: 1060px) {
+  .trilho { position: static; padding-bottom: 10px; border-bottom: 1px solid var(--hairline); }
+}
+.trilho-titulo {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: 10px;
+}
+.trilho ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+.trilho a {
+  display: grid;
+  grid-template-columns: 1.6em minmax(0, 1fr);
+  gap: 6px;
+  padding: 5px 0 5px 10px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.trilho a:hover { color: var(--ink); }
+.trilho a span { font-family: var(--f-mono); font-size: 0.75rem; color: var(--ink-3); }
+.trilho a[aria-current="true"] { color: var(--brick-ink); border-left-color: var(--brick); font-weight: 600; }
+.trilho a[aria-current="true"] span { color: var(--brick); }
+
+/* ---------------- seções ---------------- */
+.texto { display: flex; flex-direction: column; gap: 60px; }
+.secao { display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 22px; }
+.secao-cab { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 15px; align-items: start; }
+.secao-num {
+  font-family: var(--f-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #fffdf8;
+  background: var(--brick);
+  width: 2em;
+  height: 2em;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-tag);
+  margin-top: 0.25em;
+}
+.secao-cab h2 { font-size: clamp(1.5rem, 3.4vw, 1.875rem); }
+.quem { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 9px; }
+.quem-rotulo {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.cargo {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--wood);
+  background: var(--amber-wash);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+.secao h3 { font-size: 1.1875rem; padding-top: 10px; }
+.rotulo-campo {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+ul.lista, ol.lista { margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+ul.lista { list-style: none; }
+ul.lista > li { display: grid; grid-template-columns: 0.6em minmax(0, 1fr); gap: 11px; }
+ul.lista > li::before { content: ''; width: 6px; height: 6px; background: var(--amber); border-radius: 50%; margin-top: 0.66em; }
+ol.lista { padding-left: 1.4em; }
+ol.lista > li::marker { font-family: var(--f-mono); font-size: 0.875rem; color: var(--ink-3); }
+
+/* ---------------- avisos ---------------- */
+.nota, .regra {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--amber);
+  background: var(--amber-wash);
+  border-radius: 0 var(--r-box) var(--r-box) 0;
+  font-size: 1rem;
+}
+.regra { border-left-color: var(--brick); background: var(--brick-wash); }
+.nota-titulo {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber-ink);
+}
+.regra .nota-titulo { color: var(--brick-ink); }
+
+/* ---------------- tabelas ---------------- */
+.tabela { overflow-x: auto; border: 1px solid var(--hairline); border-radius: var(--r-box); background: var(--paper-raised); }
+table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+thead th {
+  text-align: left;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--paper-sunken);
+  padding: 10px 14px;
+  white-space: nowrap;
+}
+tbody td { padding: 11px 14px; border-top: 1px solid var(--hairline); vertical-align: top; line-height: 1.5; }
+tbody th {
+  text-align: left;
+  padding: 11px 14px;
+  border-top: 1px solid var(--hairline);
+  vertical-align: top;
+  font-weight: 600;
+  white-space: nowrap;
+}
+td.mono, tbody th.mono { font-family: var(--f-mono); font-size: 0.8125rem; font-weight: 400; }
+td.num { font-variant-numeric: tabular-nums; }
+
+/* ---------------- o fluxo: assinatura da página ---------------- */
+.fluxo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 24px clamp(16px, 3vw, 26px) 26px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-box);
+  background: var(--paper-raised);
+  overflow-x: auto;
+}
+.faixa { display: flex; flex-direction: column; gap: 9px; }
+.faixa-nome {
+  font-family: var(--f-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.nos { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.no {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  color: var(--ink);
+  background: var(--paper-sunken);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-tag);
+  padding: 7px 11px;
+}
+.no-move { background: var(--brick); border-color: var(--brick); color: #fffdf8; font-weight: 800; }
+.no-saldo { background: var(--leaf-wash); border-color: var(--leaf); color: var(--ink); }
+.seta { font-family: var(--f-mono); color: var(--ink-3); font-size: 0.9375rem; }
+.ponte { display: flex; align-items: center; gap: 9px; padding: 9px 0 9px 3px; }
+.ponte::before { content: ''; width: 2px; height: 26px; background: var(--hairline-strong); margin-left: 14px; }
+.ponte span {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--amber-ink);
+  background: var(--amber-wash);
+  border-radius: var(--r-tag);
+  padding: 3px 8px;
+}
+.fluxo-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+.fluxo-legenda b { font-weight: 600; color: var(--ink); }
+.amostra { display: inline-block; width: 11px; height: 11px; border-radius: 2px; vertical-align: -1px; margin-right: 5px; }
+.amostra-move { background: var(--brick); }
+.amostra-saldo { background: var(--leaf-wash); border: 1px solid var(--leaf); }
+
+/* ---------------- quadro-negro: os limites ---------------- */
+.quadro {
+  background: var(--board);
+  color: var(--board-ink);
+  border-radius: var(--r-box);
+  padding: clamp(22px, 4vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.quadro h3 { color: var(--board-ink); padding-top: 0; }
+.quadro p { color: var(--board-ink-2); }
+.quadro ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.quadro li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 11px; align-items: baseline; }
+.quadro li::before { content: '×'; font-family: var(--f-mono); font-weight: 700; color: var(--amber); }
+.quadro b { font-weight: 600; color: var(--board-ink); }
+.quadro em { color: var(--board-ink-2); font-style: normal; }
+
+/* ---------------- pé ---------------- */
+.pe {
+  max-width: 68ch;
+  margin: 72px auto 0;
+  padding-top: 22px;
+  border-top: 2px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+.pe-titulo {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+@media print {
+  .trilho, .filtro, .imprimir { display: none; }
+  .folha { max-width: none; padding: 0; }
+  .corpo { grid-template-columns: 1fr; padding-top: 24px; }
+  .texto { gap: 34px; }
+  body { font-size: 10.5pt; background: #fff; color: #000; }
+  .secao { break-inside: avoid-page; }
+  .tabela, .ticket, .fluxo, .quadro, .nota, .regra { break-inside: avoid; }
+  .quadro { background: #fff; color: #000; border: 1pt solid #000; }
+  .quadro p, .quadro em { color: #333; }
+}
+</style>
+
+<div class="folha">
+
+  <header class="capa">
+    <div class="capa-texto">
+      <div class="marca">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <circle cx="17" cy="17" r="16" fill="var(--brick)"></circle>
+          <circle cx="17" cy="17" r="5.4" fill="var(--paper)"></circle>
+          <circle cx="10.2" cy="8.4" r="1.5" fill="var(--amber)"></circle>
+          <circle cx="24.6" cy="11.4" r="1.5" fill="var(--cream)"></circle>
+          <circle cx="8.6" cy="22.4" r="1.5" fill="var(--cream)"></circle>
+          <circle cx="22.8" cy="24.6" r="1.5" fill="var(--amber)"></circle>
+        </svg>
+        <span class="marca-nome">Nobru Coffee</span>
+      </div>
+      <h1>Manual da operação, de ponta a ponta</h1>
+      <p class="capa-sub">Um ciclo completo: você monta a loja no sistema, abre o caixa, vende, produz, repõe, fecha o dia e olha o resultado do mês. Cada seção diz <strong>o que fazer</strong>, <strong>onde</strong> e <strong>por que o sistema pede aquilo</strong> — porque quase toda regra chata aqui existe para evitar um problema pior depois.</p>
+      <div class="capa-meta">
+        <span>13 seções</span>
+        <span>Endereços aparecem assim: <span class="tela">Vendas › PDV</span></span>
+        <button class="imprimir" type="button">Imprimir</button>
+      </div>
+    </div>
+
+    <div class="ticket">
+      <div class="ticket-cab">
+        <b>Cinco minutos</b>
+        <span>TOUR NA BASE DE DEMONSTRAÇÃO</span>
+      </div>
+      <ol>
+        <li>Entre como <b>camila@nobrucoffee.com.br</b></li>
+        <li><span class="tela">Vendas › Caixas</span> abrir caixa com R$ 150,00</li>
+        <li><span class="tela">Vendas › PDV</span> toque em Donut Nutella, Cappuccino (300 ml + calda) e Coxinha</li>
+        <li>Cobrar → Dinheiro → recebido R$ 100,00 → veja o troco → Confirmar</li>
+        <li><span class="tela">Estoque › Movimentações</span> a farinha, o leite e o copo acabaram de sair</li>
+        <li><span class="tela">Gestão › Auditoria</span> a venda está lá, com o seu nome</li>
+        <li>Entre como <b>jessica@</b> → <span class="tela">Gestão › Relatórios</span> → aba Produtos → veja a margem</li>
+      </ol>
+      <div class="ticket-pe">
+        Em sete passos você percorreu o caminho inteiro:<br>
+        caixa → venda → ficha técnica → estoque → auditoria → resultado.
+      </div>
+    </div>
+  </header>
+
+  <div class="filtro">
+    <span class="filtro-rotulo">Mostrar o que é</span>
+    <div class="filtro-lista">
+      <button class="filtro-btn" type="button" data-filtro="tudo" aria-pressed="true">Tudo</button>
+      <button class="filtro-btn" type="button" data-filtro="atendente" aria-pressed="false">Atendente</button>
+      <button class="filtro-btn" type="button" data-filtro="producao" aria-pressed="false">Produção</button>
+      <button class="filtro-btn" type="button" data-filtro="gerente" aria-pressed="false">Gerente</button>
+    </div>
+    <span class="filtro-aviso" role="status"></span>
+  </div>
+
+  <div class="corpo">
+
+    <nav class="trilho" aria-label="Seções do manual">
+      <div class="trilho-titulo">Índice</div>
+      <ol>
+        <li><a href="#s1"><span>01</span>Antes de começar</a></li>
+        <li><a href="#s2"><span>02</span>Dia 0 — montar a loja</a></li>
+        <li><a href="#s3"><span>03</span>O fluxo que amarra tudo</a></li>
+        <li><a href="#s4"><span>04</span>Rotina da manhã</a></li>
+        <li><a href="#s5"><span>05</span>Vender</a></li>
+        <li><a href="#s6"><span>06</span>Mesas</a></li>
+        <li><a href="#s7"><span>07</span>Encomendas</a></li>
+        <li><a href="#s8"><span>08</span>Fim do dia</a></li>
+        <li><a href="#s9"><span>09</span>Comprar e receber</a></li>
+        <li><a href="#s10"><span>10</span>Inventário e resultado</a></li>
+        <li><a href="#s11"><span>11</span>Equipe e permissões</a></li>
+        <li><a href="#s12"><span>12</span>Quando algo dá errado</a></li>
+        <li><a href="#s13"><span>13</span>O que ainda não faz</a></li>
+      </ol>
+    </nav>
+
+    <main class="texto">
+
+      <!-- 1 -->
+      <section class="secao" id="s1" data-cargo="atendente producao gerente">
+        <div class="secao-cab">
+          <span class="secao-num">01</span>
+          <div>
+            <h2>Antes de começar</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Todos</span></div>
+          </div>
+        </div>
+
+        <h3>Entrar</h3>
+        <p>Acesse <span class="tela">/entrar</span> com o e-mail e a senha que o gerente cadastrou.</p>
+        <p><strong>Cada pessoa tem o seu acesso.</strong> Não existe login compartilhado, e isso não é burocracia: o sistema grava quem cancelou cada venda, quem deu cada desconto e quem ajustou cada saldo de estoque. Com login compartilhado, a resposta para “quem fez isso?” seria sempre “o caixa” — e aí a trilha não serve para nada.</p>
+
+        <p class="rotulo-campo">Base de demonstração — senha de todos: nobru2026</p>
+        <div class="tabela">
+          <table>
+            <thead>
+              <tr><th scope="col">E-mail</th><th scope="col">Cargo</th><th scope="col">O que enxerga</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row" class="mono">jessica@nobrucoffee.com.br</th><td>Administrador</td><td>Tudo</td></tr>
+              <tr><th scope="row" class="mono">bruno@nobrucoffee.com.br</th><td>Gerente</td><td>Tudo menos permissões e configurações</td></tr>
+              <tr><th scope="row" class="mono">camila@nobrucoffee.com.br</th><td>Atendente</td><td>PDV, mesas, pedidos, clientes, encomendas</td></tr>
+              <tr><th scope="row" class="mono">diego@nobrucoffee.com.br</th><td>Atendente</td><td>Idem</td></tr>
+              <tr><th scope="row" class="mono">aline@nobrucoffee.com.br</th><td>Produção</td><td>Produção, fichas, estoque, recebimentos</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Entre com cargos diferentes para ver o menu mudar. <strong>O menu esconde o que o cargo não abre, mas quem barra de verdade é o servidor</strong> — digitar o endereço na mão não contorna nada.</p>
+
+        <h3>Instalar no aparelho</h3>
+        <p>No celular ou no iPad, o navegador oferece <strong>Instalar</strong> (ou <em>Adicionar à tela de início</em>). Instalado, o sistema abre em tela cheia, sem barra de endereço — o que importa no iPad do balcão, onde cada toque errado custa tempo.</p>
+      </section>
+
+      <!-- 2 -->
+      <section class="secao" id="s2" data-cargo="gerente">
+        <div class="secao-cab">
+          <span class="secao-num">02</span>
+          <div>
+            <h2>Dia 0 — montar a loja no sistema</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Gerente</span><span class="cargo">Administrador</span></div>
+          </div>
+        </div>
+        <p>Esta é a ordem recomendada. Cada passo depende do anterior.</p>
+
+        <h3>2.1 Configurações da loja</h3>
+        <p><span class="tela">Gestão › Configurações</span></p>
+        <p>Preencha nome, CNPJ e endereço (saem no recibo) e, principalmente, as <strong>regras da operação</strong>:</p>
+        <div class="tabela">
+          <table>
+            <thead><tr><th scope="col">Campo</th><th scope="col">O que significa na prática</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Desconto máximo do operador</th><td>Até quanto o atendente pode dar sem chamar gerente. Acima disso, o PDV bloqueia e pede alguém com a permissão de desconto livre.</td></tr>
+              <tr><th scope="row">Baixar estoque na venda</th><td>Ligado (recomendado): vender consome insumo ou produto. Desligue só se o estoque for controlado fora do sistema.</td></tr>
+              <tr><th scope="row">Pontos por R$ 1,00 <br>e valor de 1 ponto</th><td>A regra de fidelidade. Com 1 ponto por real e R$ 0,05 por ponto, o cliente ganha 5% de volta.</td></tr>
+              <tr><th scope="row">Alerta de validade</th><td>Com quantos dias de antecedência o lote entra no sino de avisos.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>2.2 Formas de pagamento</h3>
+        <p><span class="tela">Gestão › Formas de pagamento</span></p>
+        <p>Já vêm Dinheiro, PIX, Débito, Crédito, iFood e Fiado. Ajuste as <strong>taxas reais da sua maquininha</strong> — é isso que faz o relatório mostrar quanto sobrou de verdade, não quanto foi vendido.</p>
+        <div class="nota">
+          <span class="nota-titulo">Marcação que merece atenção</span>
+          <p><strong>“Conta na gaveta”</strong> separa o que é dinheiro físico do que é cartão. É o que permite o fechamento do caixa comparar o que você contou com o que deveria ter — sem somar o cartão, que não está lá.</p>
+        </div>
+
+        <h3>2.3 Categorias</h3>
+        <p><span class="tela">Produtos › Categorias</span></p>
+        <p>Comece com poucas e distintas: Donuts, BLENDS NC, Cookies, Salgados, Confeitaria, Bebidas. <strong>A cor é o que separa os grupos na grade do PDV</strong> — escolha cores bem diferentes entre si; o operador reconhece pela cor antes de ler.</p>
+
+        <h3>2.4 Insumos</h3>
+        <p><span class="tela">Estoque › Insumos</span></p>
+        <p>Cadastre tudo que a produção consome, inclusive embalagem e guardanapo. Três campos definem a qualidade de todo o resto:</p>
+        <ul class="lista">
+          <li><strong>Unidade de controle</strong> — controle na menor unidade prática: farinha em <span class="chave">g</span>, leite em <span class="chave">ml</span>, ovo em <span class="chave">un</span>. Depois de ter saldo, a unidade não muda mais — isso invalidaria fichas e histórico.</li>
+          <li><strong>Custo por unidade</strong> — quanto custa 1 g, 1 ml, 1 un. É a base de tudo. Não precisa ser perfeito no dia 0: o primeiro recebimento de compra já corrige.</li>
+          <li><strong>Estoque mínimo</strong> — abaixo disso, o insumo entra nos avisos. Sem mínimo, não há alerta de reposição.</li>
+        </ul>
+        <p>Marque <strong>perecível</strong> no que tem validade. Isso passa a exigir a validade no recebimento e liga o controle em <span class="tela">Estoque › Validades</span>.</p>
+
+        <h3>2.5 Produtos</h3>
+        <p><span class="tela">Produtos › Catálogo</span> → <strong>Novo produto</strong></p>
+        <p>O campo mais importante é o <strong>tipo</strong>, porque ele decide o que acontece no estoque quando o produto é vendido:</p>
+        <div class="tabela">
+          <table>
+            <thead><tr><th scope="col">Tipo</th><th scope="col">Exemplo</th><th scope="col">O que a venda faz</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Produção própria</th><td>Donut, cookie, coxinha</td><td>Tira do estoque de <strong>acabados</strong>. Os insumos já saíram na produção.</td></tr>
+              <tr><th scope="row">Preparado na hora</th><td>Café, milkshake, misto</td><td>Consome a <strong>ficha técnica</strong> no ato da venda.</td></tr>
+              <tr><th scope="row">Revenda</th><td>Água, refrigerante</td><td>Tira a unidade do estoque do produto.</td></tr>
+              <tr><th scope="row">Combo</th><td>Café da tarde</td><td>Explode nos componentes e aplica a regra de cada um.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Ainda no cadastro:</p>
+        <ul class="lista">
+          <li><strong>Variações</strong> para tamanhos (café 200 ml e 300 ml). O <em>fator ficha</em> diz quanto a mais a variação consome — <span class="chave">1,45</span> no 300 ml significa 45% a mais de insumo.</li>
+          <li><strong>Adicionais</strong> liberados naquele produto. Se o adicional estiver ligado a um insumo, vendê-lo já baixa estoque.</li>
+          <li><strong>Disponível hoje</strong> é o <strong>SOLD OUT</strong>. Desligue quando esgotar: o produto some do PDV mas continua no catálogo e no histórico. Não arquive por causa disso.</li>
+        </ul>
+
+        <h3>2.6 Fichas técnicas</h3>
+        <p><span class="tela">Produtos › Fichas técnicas</span></p>
+        <p><strong>É aqui que o custo nasce.</strong> Sem ficha, um produto de produção própria não sabe quanto custa e não baixa insumo.</p>
+        <p>Para cada produto, informe quanto entra de cada insumo. A tela mostra o custo por linha <strong>enquanto você digita</strong> — e é comum descobrir ali que um ingrediente responde por metade do custo.</p>
+        <p>Dois detalhes que valem o esforço:</p>
+        <ul class="lista">
+          <li><strong>Perda técnica (%)</strong> — o óleo que fica na fritura, a massa que gruda na bancada. Sem isso o custo sai otimista demais.</li>
+          <li><strong>Rendimento</strong> — se a receita rende 12 cookies, informe <span class="chave">12</span>. O sistema divide para chegar ao custo unitário.</li>
+        </ul>
+        <p>A tela avisa quando a unidade da linha não converte para a do insumo — pedir <span class="chave">un</span> de uma farinha controlada em <span class="chave">g</span>, por exemplo.</p>
+        <div class="nota">
+          <span class="nota-titulo">Versões</span>
+          <p>Enquanto a ficha nunca foi usada em produção, editar altera a própria versão. Depois do primeiro uso, qualquer mudança <strong>cria a versão seguinte</strong> — senão o custo das ordens já concluídas mudaria retroativamente, e o relatório do mês passado deixaria de bater.</p>
+        </div>
+
+        <h3>2.7 Fornecedores, mesas e equipe</h3>
+        <ul class="lista">
+          <li><span class="tela">Compras › Fornecedores</span> — cadastre e volte aos insumos para definir o <strong>fornecedor padrão</strong> de cada um. É isso que agrupa a sugestão de reposição.</li>
+          <li><span class="tela">Vendas › Mesas</span> — só se houver consumo no local.</li>
+          <li><span class="tela">Gestão › Equipe</span> — uma pessoa, um acesso, um cargo.</li>
+        </ul>
+
+        <h3>2.8 Estoque inicial</h3>
+        <ol class="lista">
+          <li><strong>Saldo inicial no cadastro do insumo</strong> — rápido, gera uma entrada manual.</li>
+          <li><strong>Pedido de compra recebido</strong> — mais fiel, porque o preço da nota já ajusta o custo médio. É o caminho recomendado.</li>
+        </ol>
+      </section>
+
+      <!-- 3 -->
+      <section class="secao" id="s3" data-cargo="atendente producao gerente">
+        <div class="secao-cab">
+          <span class="secao-num">03</span>
+          <div>
+            <h2>O fluxo que amarra tudo</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Todos</span></div>
+          </div>
+        </div>
+        <p>Vale entender isto uma vez; o resto do manual fica óbvio depois.</p>
+
+        <div class="fluxo" role="img" aria-label="Fluxo da operação em três faixas. Entra: compra, depois recebimento, que gera estoque de insumo. A ficha técnica liga o insumo à faixa Transforma: produção, que gera estoque de acabados. Ficando disponível no PDV, entra na faixa Vende: venda, pagamento, caixa e fechamento — e a venda também alimenta cliente, pontos e relatórios.">
+          <div class="faixa">
+            <span class="faixa-nome">Entra</span>
+            <div class="nos">
+              <span class="no">Pedido de compra</span>
+              <span class="seta">→</span>
+              <span class="no no-move">Recebimento</span>
+              <span class="seta">→</span>
+              <span class="no no-saldo">Estoque · insumo</span>
+            </div>
+          </div>
+          <div class="ponte"><span>ficha técnica</span></div>
+          <div class="faixa">
+            <span class="faixa-nome">Transforma</span>
+            <div class="nos">
+              <span class="no">Ordem de produção</span>
+              <span class="seta">→</span>
+              <span class="no no-move">Concluir ordem</span>
+              <span class="seta">→</span>
+              <span class="no no-saldo">Estoque · acabado</span>
+            </div>
+          </div>
+          <div class="ponte"><span>disponível no PDV</span></div>
+          <div class="faixa">
+            <span class="faixa-nome">Vende</span>
+            <div class="nos">
+              <span class="no">Comanda no PDV</span>
+              <span class="seta">→</span>
+              <span class="no no-move">Confirmar venda</span>
+              <span class="seta">→</span>
+              <span class="no">Caixa</span>
+              <span class="seta">→</span>
+              <span class="no">Fechamento</span>
+            </div>
+            <div class="nos">
+              <span class="seta">↳</span>
+              <span class="no">Cliente · pontos · relatórios</span>
+            </div>
+          </div>
+          <div class="fluxo-legenda">
+            <span><span class="amostra amostra-move"></span><b>Muda estoque e dinheiro.</b> São os três botões que alteram a realidade.</span>
+            <span><span class="amostra amostra-saldo"></span><b>Saldo</b> — o que existe na prateleira.</span>
+          </div>
+        </div>
+
+        <p>Consequências práticas:</p>
+        <ul class="lista">
+          <li>O <strong>recebimento</strong> — não o pedido de compra — é o que muda estoque e custo.</li>
+          <li>A <strong>ficha técnica</strong> é a ponte entre produto e insumo. Sem ela, o elo quebra.</li>
+          <li>A <strong>produção</strong> consome insumo e cria acabado. São dois movimentos, uma transação.</li>
+          <li>A <strong>venda</strong> tira do acabado (donut) <strong>ou</strong> consome a ficha (café), conforme o tipo do produto.</li>
+          <li>O <strong>caixa</strong> é o que amarra o dinheiro ao turno. Sem caixa aberto, não há venda.</li>
+        </ul>
+      </section>
+
+      <!-- 4 -->
+      <section class="secao" id="s4" data-cargo="producao gerente">
+        <div class="secao-cab">
+          <span class="secao-num">04</span>
+          <div>
+            <h2>Rotina da manhã</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Produção</span><span class="cargo">Gerente</span></div>
+          </div>
+        </div>
+
+        <h3>4.1 Abrir o caixa</h3>
+        <p><span class="tela">Vendas › Caixas</span> → <strong>Abrir caixa</strong></p>
+        <p>Informe o <strong>fundo de troco</strong> — o dinheiro que está fisicamente na gaveta agora.</p>
+        <p>Sem caixa aberto o PDV não registra vendas. É proposital: é o caixa que permite, no fim do turno, comparar o que deveria estar na gaveta com o que está. Só um caixa aberto por loja — dois turnos significam fechar um e abrir outro.</p>
+
+        <h3>4.2 Planejar a produção</h3>
+        <p><span class="tela">Produção › Produção do dia</span> → <strong>Nova ordem</strong></p>
+        <p>A tela abre <strong>já preenchida</strong> com a sugestão do sistema: média vendida nos últimos 7 dias, menos o que sobrou em estoque. Ajuste os números — quem decide é quem conhece o movimento do dia.</p>
+        <p>Ao criar a ordem, o sistema mostra os <strong>insumos necessários</strong> e avisa em vermelho o que vai faltar, <strong>antes</strong> de o padeiro começar.</p>
+
+        <h3>4.3 Apontar e concluir</h3>
+        <p>Durante a produção, em <span class="tela">Produção › Ordens</span>, abra a ordem e informe <strong>produzido</strong> (o que saiu bom) e <strong>perdido</strong> (o que queimou ou deformou).</p>
+        <p>Use <strong>Salvar</strong> para registrar parcialmente durante a manhã. Ao terminar, clique em <strong>Concluir</strong>. Este botão é o que mexe no estoque:</p>
+        <ul class="lista">
+          <li>consome os insumos pelo <strong>total que foi ao forno</strong> — produzido + perdido, porque a massa queimada gastou farinha do mesmo jeito;</li>
+          <li>dá entrada dos produzidos no estoque de acabados;</li>
+          <li>registra a perda no módulo de perdas, com o custo;</li>
+          <li>congela o <strong>custo real</strong> da ordem, para comparar com o previsto.</li>
+        </ul>
+        <div class="nota">
+          <span class="nota-titulo">Atalho útil</span>
+          <p>Produzir de novo um item esgotado <strong>religa a disponibilidade</strong> dele no PDV automaticamente.</p>
+        </div>
+
+        <h3>4.4 Olhar os avisos</h3>
+        <p>O sino no topo mostra o que precisa de decisão hoje: insumo no mínimo, lote vencendo, encomenda nas próximas 48 h, conta a vencer, caixa com diferença. Todo aviso leva para a tela onde o problema se resolve.</p>
+      </section>
+
+      <!-- 5 -->
+      <section class="secao" id="s5" data-cargo="atendente">
+        <div class="secao-cab">
+          <span class="secao-num">05</span>
+          <div>
+            <h2>Durante o expediente — vender</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Atendente</span></div>
+          </div>
+        </div>
+        <p><span class="tela">Vendas › PDV</span></p>
+
+        <h3>5.1 A venda comum de balcão</h3>
+        <ol class="lista">
+          <li>Escolha o tipo: <strong>Balcão</strong>, <strong>Viagem</strong> ou <strong>Entrega</strong>.</li>
+          <li>Toque nos produtos. Um toque = um item; toque de novo para somar. Produto com tamanho ou adicional abre uma janela, produto simples entra direto.</li>
+          <li>Ajuste quantidades na comanda à direita (no celular, no botão inferior).</li>
+          <li><strong>Cobrar</strong> → escolha a forma → <strong>Confirmar venda</strong>.</li>
+        </ol>
+        <p>O carrinho fica <strong>no aparelho</strong> até o pagamento — por isso tocar num donut é instantâneo, sem esperar o servidor. A gravação acontece uma vez, no “Confirmar”: pedido, itens, pagamento, caixa, estoque e pontos, tudo em uma transação.</p>
+        <div class="regra">
+          <span class="nota-titulo">Tudo ou nada</span>
+          <p>Se algo falhar — um insumo sem saldo, por exemplo — <strong>nada</strong> é gravado e a tela diz o motivo. É melhor que uma venda registrada pela metade.</p>
+        </div>
+
+        <h3>5.2 Dinheiro e troco</h3>
+        <p>Escolha <strong>Dinheiro</strong> e informe o <strong>valor recebido</strong>. Os botões de R$ 20 / 50 / 100 / 200 preenchem com um toque, e o <strong>troco aparece em destaque</strong> — é o número para ler em voz alta enquanto abre a gaveta.</p>
+
+        <h3>5.3 Dividir o pagamento</h3>
+        <p>Na janela de pagamento, <strong>Dividir pagamento</strong> → escolha a primeira forma → o sistema já sugere o restante na segunda. Até 4 formas. O botão de confirmar só libera quando a soma fecha exatamente com o total.</p>
+
+        <h3>5.4 Identificar o cliente</h3>
+        <p>Toque no ícone de pessoa → busque por nome ou telefone → ou cadastre na hora com <strong>nome + WhatsApp</strong>. Com cliente identificado, a compra entra no histórico dele, ele acumula pontos e pode <strong>resgatar pontos</strong> como desconto na própria janela de pagamento.</p>
+
+        <h3>5.5 Desconto e cupom</h3>
+        <p>Botão <strong>Desconto</strong>. Três modos: percentual, valor ou cupom.</p>
+        <ul class="lista">
+          <li><strong>O motivo é obrigatório</strong> e vai para o log de auditoria com o seu nome.</li>
+          <li>Acima do limite do seu cargo, o sistema bloqueia e pede um gerente.</li>
+          <li>Cupom é validado na hora: validade, valor mínimo, limite de uso e se é nominal a outro cliente.</li>
+        </ul>
+
+        <h3>5.6 Comanda</h3>
+        <p>Depois de confirmar, aparece a comanda com troco e pontos ganhos. <strong>Imprimir</strong> manda para a impressora térmica de 80 mm. <strong>Nova venda</strong> limpa a tela.</p>
+        <div class="nota">
+          <span class="nota-titulo">Atenção</span>
+          <p>A comanda é o comprovante da loja, <strong>não é documento fiscal</strong>. Veja a seção 13.</p>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="secao" id="s6" data-cargo="atendente">
+        <div class="secao-cab">
+          <span class="secao-num">06</span>
+          <div>
+            <h2>Mesas</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Atendente</span></div>
+          </div>
+        </div>
+        <p><span class="tela">Vendas › Mesas</span></p>
+        <p>O mapa mostra número, tempo aberto e consumo de cada mesa. A cor da borda é o estado.</p>
+        <ul class="lista">
+          <li><strong>Abrir mesa</strong> cria o pedido e leva ao PDV. Diferente do balcão, <strong>os itens são gravados conforme entram</strong>, porque a cozinha precisa vê-los antes do pagamento.</li>
+          <li><strong>Transferir</strong> — muda o pedido de mesa mantendo a mesma comanda.</li>
+          <li><strong>Juntar</strong> — passa os itens de uma mesa para a conta de outra e libera a primeira.</li>
+          <li><strong>Dividir</strong> — calcula quanto cada pessoa paga. A cobrança continua em uma comanda só, com pagamento dividido no fechamento.</li>
+          <li><strong>Abrir conta</strong> → <strong>Cobrar</strong> finaliza e libera a mesa.</li>
+        </ul>
+      </section>
+
+      <!-- 7 -->
+      <section class="secao" id="s7" data-cargo="atendente producao">
+        <div class="secao-cab">
+          <span class="secao-num">07</span>
+          <div>
+            <h2>Encomendas</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Atendente</span><span class="cargo">Produção</span></div>
+          </div>
+        </div>
+        <p><span class="tela">Clientes › Encomendas</span></p>
+        <p>A tela padrão é a <strong>agenda</strong>: atrasadas, o que sai hoje, o que sai nos próximos 7 dias. Encomenda é o pedido com mais dinheiro e o mais fácil de esquecer, porque acontece no futuro.</p>
+
+        <div class="fluxo" role="img" aria-label="Ciclo da encomenda: orçamento, confirmada, em produção, pronta, entregue.">
+          <div class="faixa">
+            <span class="faixa-nome">Ciclo da encomenda</span>
+            <div class="nos">
+              <span class="no">Orçamento</span><span class="seta">→</span>
+              <span class="no">Confirmada</span><span class="seta">→</span>
+              <span class="no">Em produção</span><span class="seta">→</span>
+              <span class="no">Pronta</span><span class="seta">→</span>
+              <span class="no no-move">Entregue</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="lista">
+          <li><strong>Nova encomenda</strong> — cliente, data e hora, itens, tema, decoração e sinal. Nasce como <strong>orçamento</strong>: uma consulta de preço não deve virar compromisso para a cozinha.</li>
+          <li><strong>Confirmar</strong> — cria a <strong>conta a receber</strong> do saldo e coloca na agenda.</li>
+          <li><strong>Receber pagamento</strong> — sinal ou saldo, entra no caixa aberto e abate a conta.</li>
+          <li><strong>Gerar ordem de produção</strong> — cria a ordem com os itens ligados a produtos que tenham ficha técnica.</li>
+          <li><strong>Pronta</strong> → <strong>Entregue</strong>.</li>
+        </ol>
+        <div class="regra">
+          <span class="nota-titulo">Regra que protege a loja</span>
+          <p><strong>Não dá para entregar com saldo em aberto.</strong> O sistema exige o recebimento antes — é o que evita a encomenda sair da loja sem estar paga.</p>
+        </div>
+      </section>
+
+      <!-- 8 -->
+      <section class="secao" id="s8" data-cargo="atendente gerente">
+        <div class="secao-cab">
+          <span class="secao-num">08</span>
+          <div>
+            <h2>Rotina do fim do dia</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Atendente</span><span class="cargo">Gerente</span></div>
+          </div>
+        </div>
+
+        <h3>8.1 Registrar perdas</h3>
+        <p><span class="tela">Produção › Perdas</span> → <strong>Registrar perda</strong></p>
+        <p>O que sobrou na vitrine, caiu, queimou ou venceu. Escolha o item, a quantidade e o motivo. <strong>O custo aparece antes de confirmar</strong> — é o número que interessa ao dono: quanto acabou de sair do bolso.</p>
+        <p>Registrar a perda baixa o estoque na hora e entra no relatório do mês. Sem isso, o sistema acha que o donut ainda está na vitrine.</p>
+
+        <h3>8.2 Sangria</h3>
+        <p><span class="tela">Vendas › Caixas</span> → <strong>Sangria / suprimento</strong></p>
+        <ul class="lista">
+          <li><strong>Sangria</strong> — dinheiro que sai da gaveta para o cofre.</li>
+          <li><strong>Suprimento</strong> — dinheiro que entra (reforço de troco).</li>
+          <li><strong>Despesa</strong> — pagamento feito com o dinheiro da gaveta. Além de sair do caixa, entra no financeiro como despesa liquidada.</li>
+        </ul>
+
+        <h3>8.3 Fechar o caixa</h3>
+        <p><span class="tela">Vendas › Caixas</span> → <strong>Fechar caixa</strong></p>
+        <ol class="lista">
+          <li><strong>Conte o dinheiro da gaveta.</strong></li>
+          <li>Informe o valor contado.</li>
+          <li>O sistema mostra o esperado e a diferença.</li>
+          <li>Se houver diferença, <strong>explique na observação</strong>.</li>
+        </ol>
+        <p>A tela deixa o esperado escondido até você digitar. É de propósito: ver o número antes de contar contamina a contagem, e uma contagem contaminada não serve para apurar nada.</p>
+        <div class="nota">
+          <span class="nota-titulo">Por que a diferença não bloqueia</span>
+          <p>Bloquear faria o operador “ajustar” o número contado até bater — e aí o sistema mentiria bonito. A diferença fica registrada, vira aviso, e um gerente concilia depois em <strong>Conferir divergência</strong>.</p>
+        </div>
+        <p>O fechamento gera um ticket com fundo, vendas em dinheiro, sangrias, esperado, contado, diferença e o total por forma de pagamento. Dá para imprimir.</p>
+        <p><strong>O caixa não fecha com pedidos em aberto.</strong> Finalize ou cancele antes.</p>
+      </section>
+
+      <!-- 9 -->
+      <section class="secao" id="s9" data-cargo="producao gerente">
+        <div class="secao-cab">
+          <span class="secao-num">09</span>
+          <div>
+            <h2>Rotina semanal — comprar e receber</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Gerente</span><span class="cargo">Produção</span></div>
+          </div>
+        </div>
+
+        <h3>9.1 Ver o que falta</h3>
+        <p><span class="tela">Compras › Pedidos de compra</span> mostra a <strong>reposição sugerida</strong>: insumos no mínimo, agrupados pelo fornecedor padrão de cada um, com o valor estimado. <strong>Gerar pedido</strong> transforma o grupo em pedido de compra em rascunho.</p>
+
+        <h3>9.2 Pedido de compra</h3>
+        <p>Confira quantidades e preços — o sistema sugere o custo médio atual; ajuste para o preço combinado. A tela avisa quando o preço está bem acima do custo médio. <strong>Marcar como enviado</strong> quando mandar para o fornecedor.</p>
+        <div class="nota">
+          <span class="nota-titulo">Lembrete</span>
+          <p>Pedido de compra <strong>não muda estoque</strong>. É intenção, não mercadoria.</p>
+        </div>
+
+        <h3>9.3 Receber</h3>
+        <p>Quando a mercadoria chegar, abra o pedido → <strong>Registrar recebimento</strong>. Vem preenchido com o que falta receber e o preço do pedido — o caso comum (“chegou tudo pelo combinado”) é um clique. Corrija as linhas quando vier diferente.</p>
+        <ul class="lista">
+          <li><strong>Insumo perecível exige validade.</strong> O sistema cria o lote e passa a acompanhar o vencimento.</li>
+          <li><strong>O preço informado aqui recalcula o custo médio</strong> do insumo — e, por tabela, o custo de todas as fichas que o usam.</li>
+          <li><strong>Recebimento parcial é normal.</strong> O pedido fica <em>parcial</em> até fechar sozinho quando o último item chega.</li>
+          <li>Marque <strong>gerar conta a pagar</strong> para o valor entrar no financeiro com vencimento.</li>
+        </ul>
+
+        <h3>9.4 Recalcular custos</h3>
+        <p>Depois de recebimentos com variação grande de preço, use <span class="tela">Produtos › Fichas técnicas</span> → <strong>Recalcular custos</strong>. Todas as fichas ativas recalculam com o custo médio atual, e a margem do catálogo se atualiza junto.</p>
+      </section>
+
+      <!-- 10 -->
+      <section class="secao" id="s10" data-cargo="gerente">
+        <div class="secao-cab">
+          <span class="secao-num">10</span>
+          <div>
+            <h2>Rotina mensal — inventário e resultado</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Gerente</span></div>
+          </div>
+        </div>
+
+        <h3>10.1 Inventário</h3>
+        <p><span class="tela">Estoque › Inventário</span> → <strong>Abrir inventário</strong></p>
+        <p>O sistema gera uma folha com todos os insumos ativos e congela o saldo de cada um. A contagem pode levar o dia inteiro.</p>
+        <p>Na folha, o <strong>saldo do sistema fica escondido por padrão</strong>. Conte primeiro, digite depois — a diferença aparece na hora. Use <strong>Só pendentes</strong> para não se perder.</p>
+        <p><strong>Finalizar e ajustar</strong> move os saldos divergentes para o valor contado, gera um movimento de ajuste para cada um (auditável) e mostra o impacto financeiro total. Itens não contados ficam como estão.</p>
+
+        <h3>10.2 Contas</h3>
+        <p><span class="tela">Financeiro › Contas a pagar</span> — aluguel, energia, folha, fornecedores. Contas marcadas como <strong>recorrentes</strong> recriam a próxima parcela sozinhas ao serem liquidadas.</p>
+        <p><span class="tela">Financeiro › Contas a receber</span> — fiado, saldo de encomendas e outras receitas.</p>
+        <p>Ambas marcam <strong>atrasado</strong> sozinhas ao passar do vencimento.</p>
+
+        <h3>10.3 Resultado</h3>
+        <p><span class="tela">Financeiro › Fluxo de caixa</span> — entradas e saídas dia a dia, taxas de cartão descontadas, resultado e margem do período.</p>
+        <p><span class="tela">Gestão › Relatórios</span> — quatro abas:</p>
+        <div class="tabela">
+          <table>
+            <thead><tr><th scope="col">Aba</th><th scope="col">Responde</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Vendas</th><td>Quanto vendi, por dia, por tipo, por forma de pagamento, por operador</td></tr>
+              <tr><th scope="row">Produtos</th><td>Qual produto dá dinheiro — faturamento, custo, lucro e margem por item</td></tr>
+              <tr><th scope="row">Produção</th><td>Planejado × produzido × vendido, aderência e aproveitamento</td></tr>
+              <tr><th scope="row">Estoque</th><td>Onde está o dinheiro parado, o que está em alerta, quanto se perdeu</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="nota">
+          <span class="nota-titulo">Como o painel compara</span>
+          <p>Sempre com o <strong>mesmo dia da semana anterior</strong>, não com ontem: numa cafeteria, terça e sábado são negócios diferentes.</p>
+        </div>
+      </section>
+
+      <!-- 11 -->
+      <section class="secao" id="s11" data-cargo="gerente">
+        <div class="secao-cab">
+          <span class="secao-num">11</span>
+          <div>
+            <h2>Equipe e permissões</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Administrador</span></div>
+          </div>
+        </div>
+        <p><span class="tela">Gestão › Equipe</span> — uma pessoa, um acesso.</p>
+        <p><span class="tela">Gestão › Cargos e permissões</span> — quatro cargos vêm prontos:</p>
+        <div class="tabela">
+          <table>
+            <thead><tr><th scope="col">Cargo</th><th scope="col">Para quem</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Administrador</th><td>Dono. Acesso total, inclusive permissões.</td></tr>
+              <tr><th scope="row">Gerente</th><td>Operação completa e financeiro. Não mexe em permissões nem em configurações.</td></tr>
+              <tr><th scope="row">Atendente</th><td>PDV, mesas, pedidos, clientes, encomendas. Sem financeiro.</td></tr>
+              <tr><th scope="row">Produção</th><td>Produção, fichas, estoque, recebimento de compras.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Dá para criar cargos próprios marcando permissão por permissão, entre as 53 do catálogo. Algumas separam exatamente onde costuma doer:</p>
+        <ul class="lista">
+          <li><span class="chave">pdv.desconto</span> × <span class="chave">pdv.desconto_livre</span> — dar desconto até o limite × acima dele</li>
+          <li><span class="chave">pdv.cancelar_item</span> × <span class="chave">pdv.cancelar_pedido</span> × <span class="chave">pdv.estornar</span></li>
+          <li><span class="chave">produtos.ver</span> × <span class="chave">produtos.preco</span> — ver o catálogo × mudar preço</li>
+          <li><span class="chave">financeiro.ver</span> × <span class="chave">financeiro.gerenciar</span></li>
+          <li><span class="chave">caixa.fechar</span> × <span class="chave">caixa.conferir</span> — fechar × aprovar uma divergência</li>
+        </ul>
+        <p><strong>Desativar um acesso desconecta a pessoa na hora</strong> e preserva todo o histórico de vendas dela.</p>
+
+        <h3>Auditoria</h3>
+        <p><span class="tela">Gestão › Auditoria</span> mostra quem fez o quê, quando, com o antes e o depois. Preço alterado, venda cancelada, estoque ajustado, permissão mudada, caixa fechado — tudo com IP e horário. É a trilha que explica uma diferença de caixa três semanas depois.</p>
+      </section>
+
+      <!-- 12 -->
+      <section class="secao" id="s12" data-cargo="atendente producao gerente">
+        <div class="secao-cab">
+          <span class="secao-num">12</span>
+          <div>
+            <h2>Quando algo dá errado</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Todos</span></div>
+          </div>
+        </div>
+        <div class="tabela">
+          <table>
+            <thead><tr><th scope="col">Situação</th><th scope="col">O que fazer</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Errou um item na comanda</th><td>Botão de lixeira no item. Precisa da permissão de cancelar item.</td></tr>
+              <tr><th scope="row">Cliente desistiu antes de pagar</th><td><span class="tela">Vendas › Pedidos</span> → ⋯ → <strong>Cancelar pedido</strong>, com motivo.</td></tr>
+              <tr><th scope="row">Venda já finalizada e errada</th><td><span class="tela">Vendas › Pedidos</span> → ⋯ → <strong>Cancelar e estornar</strong>. Devolve estoque, estorna os pagamentos no caixa e desfaz os pontos. Exige permissão de estorno.</td></tr>
+              <tr><th scope="row">Faltou dinheiro no caixa</th><td>Feche informando o valor real e explique na observação. Um gerente concilia em <strong>Conferir divergência</strong>. Nunca “ajuste” o número contado.</td></tr>
+              <tr><th scope="row">Estoque não bate com a prateleira</th><td>Item isolado: <span class="tela">Estoque › Insumos</span> → ⋯ → <strong>Ajustar saldo</strong>, com motivo. Vários itens: abra um inventário.</td></tr>
+              <tr><th scope="row">Produto acabou no meio do dia</th><td>Desligue <strong>Disponível</strong> na lista de produtos. Volta sozinho na próxima produção.</td></tr>
+              <tr><th scope="row">Preço do insumo subiu</th><td>O recebimento já ajusta o custo médio. Depois rode <strong>Recalcular custos</strong> e confira quais produtos ficaram com margem baixa em <span class="tela">Produtos › Catálogo</span>.</td></tr>
+              <tr><th scope="row">“Nenhum caixa aberto”</th><td>Abra o caixa em <span class="tela">Vendas › Caixas</span>. O PDV não grava venda sem caixa.</td></tr>
+              <tr><th scope="row">“Estoque insuficiente”</th><td>A ficha técnica pede mais do que existe. Dê entrada no insumo, ajuste o saldo, ou corrija a ficha.</td></tr>
+              <tr><th scope="row">Esqueceu a senha</th><td>Um gerente redefine em <span class="tela">Gestão › Equipe</span> → editar → nova senha.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 13 -->
+      <section class="secao" id="s13" data-cargo="atendente producao gerente">
+        <div class="secao-cab">
+          <span class="secao-num">13</span>
+          <div>
+            <h2>O que o sistema ainda não faz</h2>
+            <div class="quem"><span class="quem-rotulo">Quem faz</span><span class="cargo">Todos</span></div>
+          </div>
+        </div>
+        <div class="quadro">
+          <h3>Saber o limite economiza uma descoberta ruim no meio do turno</h3>
+          <ul>
+            <li><span><b>Não emite documento fiscal.</b> <em>A comanda é o comprovante da loja. O cadastro já guarda CNPJ, CPF e o que uma integração de NFC-e exigiria, mas a integração em si não existe.</em></span></li>
+            <li><span><b>Não vende offline.</b> <em>O aplicativo abre sem internet e mostra um aviso, mas nenhuma venda é gravada sem rede. Uma fila offline exigiria resolver conflito de saldo de estoque e de caixa na reconexão; entregar isso pela metade seria pior do que não ter.</em></span></li>
+            <li><span><b>Não integra com o iFood.</b> <em>Pedidos de iFood são lançados no PDV como tipo iFood para o faturamento ficar completo, mas não há sincronia automática.</em></span></li>
+            <li><span><b>Não envia WhatsApp sozinho.</b> <em>Os botões abrem a conversa com o cliente; o texto é seu.</em></span></li>
+            <li><span><b>Uma loja por vez na tela.</b> <em>O banco já é multi-loja, mas a interface opera uma loja de cada vez.</em></span></li>
+            <li><span><b>Sem app nativo.</b> <em>É um PWA instalável — na prática abre como aplicativo, mas não está nas lojas da Apple e do Google.</em></span></li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="pe">
+    <span class="pe-titulo">Antes do primeiro acesso</span>
+    <p>Este manual descreve o sistema como ele foi construído. A base de demonstração — as contas da seção 1, o catálogo e os 45 dias de histórico — é criada com <span class="chave">pnpm db:push</span> e <span class="chave">pnpm db:seed</span> contra o seu PostgreSQL. Sem isso não há o que abrir.</p>
+    <p>Versão em Markdown no repositório: <span class="chave">docs/MANUAL-DE-USO.md</span>. Decisões de arquitetura e o motivo de cada regra: <span class="chave">docs/ARQUITETURA.md</span>.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var secoes = Array.prototype.slice.call(document.querySelectorAll('.secao'));
+  var botoes = Array.prototype.slice.call(document.querySelectorAll('.filtro-btn'));
+  var aviso = document.querySelector('.filtro-aviso');
+  var links = Array.prototype.slice.call(document.querySelectorAll('.trilho a'));
+
+  function itemDoTrilho(id) {
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].getAttribute('href') === '#' + id) return links[i].parentElement;
+    }
+    return null;
+  }
+
+  function aplicar(cargo) {
+    var visiveis = 0;
+    secoes.forEach(function (secao) {
+      var papeis = (secao.dataset.cargo || '').split(' ');
+      var mostra = cargo === 'tudo' || papeis.indexOf(cargo) !== -1;
+      secao.hidden = !mostra;
+      var item = itemDoTrilho(secao.id);
+      if (item) item.hidden = !mostra;
+      if (mostra) visiveis++;
+    });
+    botoes.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.filtro === cargo));
+    });
+    aviso.textContent = cargo === 'tudo' ? '' : visiveis + ' de ' + secoes.length + ' seções';
+  }
+
+  botoes.forEach(function (b) {
+    b.addEventListener('click', function () { aplicar(b.dataset.filtro); });
+  });
+
+  // Marca no índice a seção que está sendo lida.
+  if ('IntersectionObserver' in window) {
+    var observador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (l) { l.removeAttribute('aria-current'); });
+        var alvo = null;
+        for (var i = 0; i < links.length; i++) {
+          if (links[i].getAttribute('href') === '#' + e.target.id) { alvo = links[i]; break; }
+        }
+        if (alvo) alvo.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    secoes.forEach(function (s) { observador.observe(s); });
+  }
+
+  document.querySelector('.imprimir').addEventListener('click', function () { window.print(); });
+})();
+</script>
