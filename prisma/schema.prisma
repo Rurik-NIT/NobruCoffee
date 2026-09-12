@@ -15,7 +15,13 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Conexão da aplicação. Em provedor com pooling (Neon, Supabase), esta é a
+  // URL do pooler.
+  url       = env("DATABASE_URL")
+  // Conexão direta, sem pooler. O Prisma precisa dela para aplicar DDL —
+  // migration através do pooler falha. Sem pooling, aponte as duas para a
+  // mesma URL. Ver docs/DEPLOY.md § 1.
+  directUrl = env("DIRECT_URL")
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

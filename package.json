@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Nobru Coffee & Donuts — sistema operacional para cafeterias, padarias e donuterias.",
+  "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": ">=20.11"
   },
@@ -27,7 +28,8 @@
     "gerar:icones": "node scripts/gerar-icones.mjs",
     "setup:local": "prisma db push && tsx prisma/seed.ts",
     "banco:preparar": "node scripts/preparar-banco.mjs",
-    "build:check": "node scripts/build-conferencia.mjs"
+    "build:check": "node scripts/build-conferencia.mjs",
+    "criar:admin": "tsx scripts/criar-admin.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
