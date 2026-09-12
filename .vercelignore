@@ -1,0 +1,34 @@
+# O que não sobe num `vercel deploy` feito da máquina.
+#
+# A CLI não aplica o .gitignore de forma confiável aqui: sem este arquivo o
+# node_modules inteiro é enviado e o deploy morre no limite de 100 MB. Num
+# deploy por Git isto é irrelevante — a Vercel clona o repositório e instala
+# as dependências sozinha —, mas o deploy direto precisa da lista.
+
+# Instalado no servidor a partir do pnpm-lock.yaml.
+node_modules
+
+# Artefatos de build; a Vercel gera os dela.
+.next
+.next-check
+out
+build
+dist
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# Segredos. Já ignorados pelo Git, repetidos aqui porque este arquivo
+# substitui aquele — e um .env de desenvolvimento no bundle de produção é
+# exatamente o tipo de coisa que ninguém percebe até dar errado.
+.env
+.env.local
+.env*.local
+
+# Ruído.
+.git
+.github
+.vscode
+.claude
+coverage
+*.log
+.vercel
