@@ -24,6 +24,7 @@ Configure no painel do provedor, nunca no repositório:
 
 ```
 DATABASE_URL=postgresql://user:senha@host/db?sslmode=require
+DIRECT_URL=postgresql://user:senha@host-direto/db?sslmode=require
 AUTH_SECRET=<48 bytes aleatórios, único por ambiente>
 NEXT_PUBLIC_APP_URL=https://sistema.nobrucoffee.com.br
 STORE_TIMEZONE=America/Sao_Paulo
@@ -43,17 +44,18 @@ node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 
 ## 3. Migrations
 
-Antes do primeiro deploy, saia do `db:push` e crie a migration inicial:
-
-```bash
-pnpm db:migrate --name inicial
-```
-
-Comite `prisma/migrations/`. No deploy, rode antes de subir a aplicação:
+`prisma/migrations/0_inicial` já contém o schema inteiro. No deploy, rode
+antes de subir a aplicação:
 
 ```bash
 pnpm db:deploy
 ```
+
+`db:push` continua sendo o caminho do desenvolvimento local — em produção,
+nunca: ele altera o banco sem deixar registro do que mudou.
+
+Mudou o schema? `pnpm db:migrate --name <o-que-mudou>` gera a migration nova,
+que é commitada junto com a alteração.
 
 ---
 
@@ -69,9 +71,18 @@ pnpm start
 
 ### Vercel
 
-Funciona sem ajuste: o framework é detectado e o build já gera o cliente Prisma.
-Configure as variáveis e, se quiser migration automática, use
-`pnpm db:deploy && pnpm build` como comando de build.
+O framework é detectado sozinho e o `build` já roda `prisma generate`. Três
+pontos que não são automáticos:
+
+1. **Build command:** `pnpm db:deploy && pnpm build`, para a migration ser
+   aplicada a cada deploy. Sem isso o schema fica para trás do código.
+2. **Pooler:** a função serverless abre uma conexão por invocação, e um Postgres
+   estoura o limite rápido. `DATABASE_URL` aponta para o pooler, `DIRECT_URL`
+   para a conexão direta — o `db:deploy` do build usa a segunda.
+3. **Limite de tentativas de login:** o contador é um `Map` em memória
+   (`modules/auth/actions.ts`). Cada instância serverless tem o seu, então o
+   limite real é bem mais frouxo que os 5 configurados. Com tráfego de verdade,
+   migre para Redis — está isolado em uma função.
 
 ### Docker
 
@@ -107,10 +118,16 @@ CMD ["node_modules/.bin/next", "start"]
 
 O seed é de **demonstração** — não rode em produção.
 
-Crie a empresa, a loja e o primeiro administrador com um script pontual ou pelo
-Prisma Studio (`pnpm db:studio`), gerando o hash da senha no mesmo formato de
-`src/server/auth/password.ts`. Depois disso tudo é feito pela interface:
-`Gestão › Equipe` cadastra o resto do time.
+`pnpm criar:admin` cria a empresa, a loja, os quatro cargos de sistema e o
+primeiro administrador — nada além disso:
+
+```bash
+ADMIN_EMAIL=voce@dominio.com.br ADMIN_SENHA='<senha forte>' EMPRESA_FANTASIA='Nobru Coffee e Donuts' LOJA_NOME='Nobru Coffee — Jardim Esplanada' pnpm criar:admin
+```
+
+Roda uma vez: havendo qualquer usuário no banco ele aborta sem escrever. As
+demais variáveis estão no cabeçalho de `scripts/criar-admin.ts`. Depois disso
+tudo é feito pela interface: `Gestão › Equipe` cadastra o resto do time.
 
 A ordem de configuração do dia 1 está em
 [`MANUAL-DE-USO.md` § 2](MANUAL-DE-USO.md#2-dia-0--montar-a-loja-no-sistema).
